@@ -1,0 +1,21 @@
+<h3>Community:</h3>
+<ul>
+    <% if @sfn_topics.size == 0 %>
+        No topics found.
+    <% end %>
+    <% @sfn_topics[0..4].each { |el| %>
+        <li><a href=<%=el['at_sfn']%>><%= el['subject']%></a></li>
+        <%= el['content'].gsub(/<\/?[^>]*>/, "")[0..50] %>...
+    <%  } %>
+</ul>
+
+<h3>Knowledge base:</h3>
+<ul>
+    <% if @zendesk_entries.size == 0 %>
+        No articles found.
+    <% end %>
+    <% @zendesk_entries[0..4].each { |el| %>
+        <li><a href="https://box.zendesk.com/entries/<%=el['id']%>"><%= el['title']%></a></li>
+        <%= el['body'].gsub(/<\/?[^>]*>/, "")[0..50] %>...
+    <%  } %>
+</ul>

@@ -31,3 +31,8 @@ group :test do
   # Pretty printed test output
   gem 'turn', :require => false
 end
+
+group :development do
+  # Pretty printed test output
+  gem 'sqlite3';
+end
