@@ -4,7 +4,7 @@
         No topics found.
     <% end %>
     <% @sfn_topics[0..4].each { |el| %>
-        <li><a href=<%=el['at_sfn']%>><%= el['subject']%></a></li>
+        <li><a href=<%=el['at_sfn']%> target=_blank><%= el['subject']%></a></li>
         <%= el['content'].gsub(/<\/?[^>]*>/, "")[0..50] %>...
     <%  } %>
 </ul>
@@ -15,7 +15,7 @@
         No articles found.
     <% end %>
     <% @zendesk_entries[0..4].each { |el| %>
-        <li><a href="https://box.zendesk.com/entries/<%=el['id']%>"><%= el['title']%></a></li>
+        <li><a href="https://box.zendesk.com/entries/<%=el['id']%>" target=_blank><%= el['title']%></a></li>
         <%= el['body'].gsub(/<\/?[^>]*>/, "")[0..50] %>...
     <%  } %>
 </ul>

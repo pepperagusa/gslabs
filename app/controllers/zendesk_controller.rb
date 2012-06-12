@@ -3,8 +3,6 @@ require 'uri'
 
 class ZendeskController < ApplicationController
 
-#  before_filter :load_questions, :only => [:topreply, :mainmenu, :index]
-
   GS_COMPANY = "boxnet"
   ZD_COMPANY = "box"
   
@@ -16,8 +14,8 @@ class ZendeskController < ApplicationController
   end
 
   def search
-    @zendesk_entries = api_call(ZENDESK_API_URL + "/portal/search?query=#{params['query']}")["results"] #.collect { |hash| hash.symbolize_keys }
-    @sfn_topics = api_call(SATISFACTION_API_URL + "/companies/#{GS_COMPANY}/topics.json?query=#{params['query']}")["data"] #.collect { |hash| hash.symbolize_keys }
+    @zendesk_entries = api_call(ZENDESK_API_URL + "/portal/search?query=#{params['query']}")["results"]
+    @sfn_topics = api_call(SATISFACTION_API_URL + "/companies/#{GS_COMPANY}/topics.json?query=#{params['query']}")["data"]
   end
 
   private
