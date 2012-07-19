@@ -1,0 +1,123 @@
+  <div class="row-fluid">
+
+      <div class="span5">
+
+        <div class="btn-group">
+          <button class="btn<% if (@filter_label == 'Contributors') %> disabled" <% else %>" onclick="applyFilter('');" <% end %>>Contributors</button>
+          <button class="btn<% if (@filter_label == 'Employees') %> disabled" <% else %>" onclick="applyFilter('employees');" <% end %>>Employees</button>
+          <button class="btn<% if (@filter_label == 'Everyone') %> disabled" <% else %>" onclick="applyFilter('visited');" <% end %>>Everyone</button>
+        </div>
+  
+        <h5>Total: <%= @total_people %></h5>
+        <ul class="pager">
+            <% if (@current_page == 1) then %>
+              <li class="disabled"><a href="#">Previous</a></li>
+            <% else %>
+              <li><a href="#" onclick="changePage(-1);">Previous</a></li>
+            <% end %>
+            
+            <% if (@current_page == @pages) then %>
+              <li class="disabled"><a href="#">Next</a></li>
+            <% else %>
+              <li><a href="#" onclick="changePage(1);">Next</a></li>
+            <% end %>
+        <h5>Page <%= @current_page %> of <%= @pages %></h5>
+        </ul>
+
+
+      </div>
+      
+      <div class="span7">
+      </div>
+      
+  </div>
+
+  <div class="row-fluid">
+
+      <div class="span5">
+<!--        Members <%= (@current_page-1)*30 + 1 %> to <% if (@current_page == @pages) then %> <%= @total_people %> <% else %> <%= (@current_page)*30 %> <% end %>
+-->
+          <table class="table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Title</th>
+                <th></th>
+              </tr>
+            </thead>
+
+            <tbody>
+                <% @people.each do |user| %>
+                  <tr>
+                    <td><img src=<%= user['avatar_url_small'] %>> <%= user['name'] %></td>
+                    <td><%= user['title'] %></td>
+                    <td>
+                      <a href=# onclick="showTopics(<%= user['id'] %>);" class="btn">Details</a>
+                    </td>
+                  </tr>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="span7" id="topics">
+    </div>
+
+</div>
+  
+<div class="row-fluid">
+  
+    <div class="span5">
+      Page <%= @current_page %> of <%= @pages %>
+      <ul class="pager">
+          <% if (@current_page == 1) then %>
+            <li class="disabled"><a href="#">Previous</a></li>
+          <% else %>
+            <li><a href="#" onclick="changePage(-1);">Previous</a></li>
+          <% end %>
+          
+          <% if (@current_page == @pages) then %>
+            <li class="disabled"><a href="#">Next</a></li>
+          <% else %>
+            <li><a href="#" onclick="changePage(1);">Next</a></li>
+          <% end %>
+      </ul>
+    </div>
+    
+    <div class="span7">
+    </div>
+    
+</div>
+
+<div class="row-fluid">
+    <hr>
+    <footer>
+        <p>&copy; Get Satisfaction Labs, 2012</p>
+    </footer>
+</div>
+
+<script type="text/javascript">
+    function showTopics(userId)
+    {
+        jQuery('#topics').empty().html('<center><img src="/assets/loader.gif" /></center>');
+        jQuery.get("/members/topics?userId=" + userId, function(data) {
+            jQuery('#topics').html(data);
+        });
+    }
+    
+    function changePage(diff)
+    {
+        jQuery('#people').empty().html('<center><img src="/assets/loader.gif" /></center>');
+        newpage = <%= @current_page %> + diff;
+        jQuery.get('/members/people?companyslug=<%= @company_slug %>&filter=<%= @filter %>&page=' + newpage, function(data) {
+            jQuery('#people').html(data);
+        });
+    }
+    function applyFilter(newFilter)
+    {
+        jQuery('#people').empty().html('<center><img src="/assets/loader.gif" /></center>');
+        jQuery.get('/members/people?companyslug=<%= @company_slug %>&filter=' + newFilter + '&page=1', function(data) {
+            jQuery('#people').html(data);
+        });
+    }
+</script>

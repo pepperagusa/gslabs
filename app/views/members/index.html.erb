@@ -1,0 +1,56 @@
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <a class="brand" href="#">Community Members Explorer</a>
+<!--
+    <div class="nav-collapse">
+        <ul class="nav">
+          <li class="active"><a href="#">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+    </div>
+-->
+      <form class="navbar-search pull-left" id="search">
+        <input type="text" name="companyslug" class="input-medium search-query" placeholder="set community here">
+        <button type="submit" class="btn btn-inverse" style="margin-top:0px;"><i class="icon-search"></i> Go!</button>
+      </form>
+      
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid" id=people>
+</div>
+    
+<script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery.validate/1.7/jquery.validate.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function(){
+    
+            jQuery("#search").validate({
+                    debug: false,
+                    rules: {
+                            query: {
+                                    required: true,
+                            }
+                    },
+                    messages: {
+                            query: "",
+                    },
+                    submitHandler: function(form) {
+                            // do other stuff for a valid form
+                            jQuery('#people').empty().html('<img src="/assets/loader.gif" />');
+                            jQuery.post('/members/people', jQuery("#search").serialize(), function(data) {
+                                    jQuery('#people').html(data);
+                            });
+                    }
+            });
+            
+    });
+</script>
