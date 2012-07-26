@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<head>
+
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet">
+<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-modal.js"></script>
+<style>
+  #left_widget_tab a {
+    top: 25%;
+    left: 0;
+    width: 42px;
+    height: 102px;
+    color: white;
+    cursor: pointer;
+    text-indent: -100000px;
+    overflow: hidden;
+    position: fixed;
+    z-index: 100000;
+    margin-left: -7px;
+    background-color: #007;
+    background-image: url(http://s3.amazonaws.com/getsatisfaction.com/images/feedback_trans_tab.png);
+  }
+  #left_widget_tab a:hover { margin-left: -4px; }
+</style>
+
+</head>
+
+<body>
+	<div id="left_widget_tab">
+	  <a data-toggle="modal" href="#myModal"></a>
+	</div>
+
+	<div class="modal hide" id="myModal" style="width: 800px; margin-left:-400px;">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal">x</button>
+	    <h3>Popular FAQs</h3>
+	  </div>
+	  <div class="modal-body">
+		<div id="getsat-widget-912"></div>
+		<script type="text/javascript" src="https://loader.engage.gsfn.us/loader.js"></script>
+		<script type="text/javascript">
+		if (typeof GSFN !== "undefined") { GSFN.loadWidget(912,{"containerId":"getsat-widget-912"}); }
+		</script>
+	  </div>
+	</div>
+
+</body>
