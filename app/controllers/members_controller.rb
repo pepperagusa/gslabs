@@ -14,6 +14,7 @@ class MembersController < ApplicationController
       @current_page = params['page'].to_i
     end
     @company_slug = params['companyslug']
+    session[:companyId] = api_call("/companies/#{@company_slug}")["id"]
     
     @filter = params['filter']
     case @filter
@@ -31,13 +32,18 @@ class MembersController < ApplicationController
   end
 
   def topics
-    result = api_call("/people/#{params['userId']}/followed/topics.json")
-    @topics = result["data"]
-    @total_topics = result["total"]
-    
-    this_user = api_call("/people/#{params['userId']}.json")
-    @this_user_name = this_user['name']
-    @this_user_avatar = this_user['avatar_url_medium']
+    result = api_call("/people/#{params['userId']}/followed/topics.json?limit=30")
+    all_topics = result["data"]
+    @topics = Array.new
+
+    all_topics.each { |t|
+      puts "===============topic=#{t['company_id']}======session=#{session[:companyId]}========"
+      if (t['company_id'].to_s == session[:companyId].to_s) then
+        @topics.push(t)
+      end
+    }
+
+    @this_user = api_call("/people/#{params['userId']}.json")
   end
 
   private

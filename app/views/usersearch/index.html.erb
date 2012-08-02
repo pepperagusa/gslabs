@@ -1,0 +1,62 @@
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">User Activity Explorer</a>
+      <form class="navbar-search pull-left" id="authform">
+        <input type="text" name=username class="input-large" placeholder="Email">
+        <input type="password" name=password class="input-medium" placeholder="Password">
+        <a href=# class="btn" onclick=authenticate() style="margin-top:0px;">Sign in</a>
+      </form>
+      <a href=# class="btn" onclick=logout() id='logout' style="display: none;">Sign out</a>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <form class="well form-inline" id="memberform" style="display: none;">
+    <input type="text" name=company_slug class="input-medium" placeholder="Community">
+    <input type="text" name=member_email class="input-large" placeholder="Member's email address" size=50>
+    <a href=# class="btn" onclick=showtopics()>Look up</a>
+  </form>
+</div>
+
+<div class="container-fluid" id=topics>
+</div>
+
+
+
+
+<script type="text/javascript">
+    function authenticate()
+    {
+        jQuery.post("/usersearch/login", jQuery("#authform").serialize(), function(data) {
+            if (data == "Authentication failed") {
+              jQuery('#topics').html(data);
+            } else {
+              jQuery('#authform').hide();
+              jQuery('#logout').show();
+              jQuery('#memberform').show();
+            }
+        });
+    }
+    
+    function showtopics()
+    {
+        jQuery('#topics').empty().html('<center><img src="/assets/loader.gif" /></center>');
+        jQuery.post("/usersearch/topics", jQuery("#memberform").serialize(), function(data) {
+          jQuery('#topics').html(data);
+        });
+    }
+    
+    function logout()
+    {
+        jQuery.get("/usersearch/logout", function(data) {
+          jQuery('#topics').empty();
+          jQuery('#authform').show();
+          jQuery('#logout').hide();
+          jQuery('#memberform').hide();
+        });
+    }
+
+
+</script>
