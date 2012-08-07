@@ -1,30 +1,49 @@
-<div class="navbar navbar-fixed-top">
-  <div class="navbar-inner">
-    <div class="container">
-      <a class="brand" href="#">User Activity Explorer</a>
-      <form class="navbar-search pull-left" id="authform">
-        <input type="text" name=username class="input-large" placeholder="Email">
-        <input type="password" name=password class="input-medium" placeholder="Password">
-        <a href=# class="btn" onclick=authenticate() style="margin-top:0px;">Sign in</a>
-      </form>
-      <a href=# class="btn" onclick=logout() id='logout' style="display: none;">Sign out</a>
+<div id=wrapper>
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="brand" href="#">User Activity Explorer</a>
+        <form class="navbar-search pull-left" id="authform">
+          <input type="text" name=username class="input-large" placeholder="Email">
+          <input type="password" name=password class="input-medium" placeholder="Password">
+          <a href=# class="btn" onclick=authenticate() style="margin-top:0px;">Sign in</a>
+        </form>
+        <form class="navbar-search pull-left" id="logout" style="display: none;">
+          <a href=# class="btn" onclick=logout()>Sign out</a>
+        </form>
+        <div class="pull-right">&copy; <a href="http://getsatisfaction.com">Get Satisfaction</a> Labs, 2012</div>
+      </div>
     </div>
   </div>
+  
+  <div id=content>
+
+    <div class="container-fluid">
+      <form class="form-horizontal" id="memberform" style="display: none;">
+        <fieldset>
+          <div class="control-group">
+            <label class="control-label" for="input01">Community</label>
+            <div class="controls">
+              <input type="text" name=company_slug class="input-medium" placeholder="e.g. photoshop_family">
+            </div>
+            <br />
+            <label class="control-label" for="input01">Member's email address</label>
+            <div class="controls">
+              <input type="text" name=member_email class="input-large" placeholder="e.g. alice@gmail.com" size=50>
+              <a href=# class="btn" onclick=showtopics()>Look up</a>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+    
+    <div class="container-fluid">
+      <div class="span8" id=topics>
+      </div>
+    </div>
+  </div>
+
 </div>
-
-<div class="container-fluid">
-  <form class="well form-inline" id="memberform" style="display: none;">
-    <input type="text" name=company_slug class="input-medium" placeholder="Community">
-    <input type="text" name=member_email class="input-large" placeholder="Member's email address" size=50>
-    <a href=# class="btn" onclick=showtopics()>Look up</a>
-  </form>
-</div>
-
-<div class="container-fluid" id=topics>
-</div>
-
-
-
 
 <script type="text/javascript">
     function authenticate()
