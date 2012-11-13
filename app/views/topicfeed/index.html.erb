@@ -1,0 +1,47 @@
+<style>
+#topics {
+    width: 500px;
+    margin-left: 20px;
+    padding: 0px 5px;
+    height: 28.5em; /* total visible tweets, in this case set to 5 */
+    overflow: hidden; /*keep tweets outside of the container from being seen */
+    border: 1px solid #DDD;
+}
+#topiclist {
+    width: 500px;
+    position: relative;
+    list-style-type: none;
+    top: -5em; /* allows a tweet to be moved into hidden space before scrolling into view */
+    margin: 0px;
+    padding: 0px;
+}
+.topic {
+    height: 5em;
+    padding-top: 0.3em;
+    font-size: 0.9em;
+    border-bottom: 1px solid #DDD;
+}
+.avatar {
+    float: left;
+    padding-right: 1em;
+    height: 55px;
+    width: 55px;
+}
+</style>
+
+<img style="margin: -40px auto 20px 20px;" src="https://getsatisfaction.com/images/badges/badge_get_help.png" />
+<br/>
+
+<div id=topics>
+</div>
+
+<script type="text/javascript">
+    function loadTopics() {
+//        jQuery('#topics').empty().html('<img src="/assets/loader.gif" />');
+        jQuery.get('/topicfeed/topics', function(data) {
+                jQuery('#topics').empty().html(data);
+        });
+    };
+    loadTopics;
+    var reloadTopics = setInterval(loadTopics, 15000);
+</script>
