@@ -72,8 +72,7 @@ class MembersController < ApplicationController
     request.basic_auth(session[:username], session[:password])
     response = http.request(request)
 puts "#{endpoint} -> #{response.body}"
-
-    JSON.parse(response.body)
+    (response.body != "The resource you requested does not exist") ? JSON.parse(response.body) : {"nodata" => "true"}
   end
   
   def api_call_2_legged(endpoint)

@@ -1,5 +1,5 @@
 <style>
-#topics {
+.topics {
     width: 500px;
     margin-left: 20px;
     padding: 0px 5px;
@@ -32,16 +32,54 @@
 <img style="margin: -40px auto 20px 20px;" src="https://getsatisfaction.com/images/badges/badge_get_help.png" />
 <br/>
 
-<div id=topics>
+<div id=topics class=topics>
+  <ul id=topiclist>
+  </ul>
+</div>
+
+<div id=last_topic class=topics style="display:none;">
+  <ul id=lasttopic>
+  </ul>
 </div>
 
 <script type="text/javascript">
     function loadTopics() {
 //        jQuery('#topics').empty().html('<img src="/assets/loader.gif" />');
         jQuery.get('/topicfeed/topics', function(data) {
-                jQuery('#topics').empty().html(data);
+                jQuery('#topiclist').empty().html(data);
         });
     };
-    loadTopics;
-    var reloadTopics = setInterval(loadTopics, 15000);
+    function loadLastTopic() {
+//        jQuery('#topics').empty().html('<img src="/assets/loader.gif" />');
+        jQuery.get('/topicfeed/last_topic', function(data) {
+                jQuery('#lasttopic').empty().html(data);
+        });
+        if (jQuery('#lasttopic li').size() > 0) {
+          $("#topiclist li:last").remove();
+          $("#topiclist").append($("#lasttopic li"));
+          autoScroll();
+        };
+    };
+    
+    function autoScroll() {
+        var itemHeight = $('#topiclist li').outerHeight();
+        /* calculate how much to move the scroller */
+        var moveFactor = parseInt($('#topiclist').css('top')) + itemHeight;
+        /* animate the carousel */
+        $('#topiclist').animate({
+            'top' : moveFactor
+        }, 'slow', 'linear', function(){
+            /* put the last item before the first item */
+            $("#topiclist li:first").before($("#topiclist li:last"));
+            /* reset top position */             
+            $('#topiclist').css({'top' : '-5em'});
+        });
+    };
+    /* make the carousel scroll automatically when the page loads */
+
+    loadTopics();
+    loadLastTopic();
+
+    var reloadTopics = setInterval(loadLastTopic, 3000);
+    // var moveScroll = setInterval(autoScroll, 3000);
 </script>

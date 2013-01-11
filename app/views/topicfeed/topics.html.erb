@@ -1,36 +1,14 @@
-<ul id=topiclist>
-      <% @topics.each do |topic| %>
-      <li class=topic>
-            <div class=avatar>
-                  <img width=50 height=50 src=<%= @companies[topic['company_id']] %>>
-            </div>
-            <div>
-                  <!-- <img src=<%=topic['author']['avatar_url_medium']%>> -->
-            </div>
-            <div class=topictitle>
-                  <b><%= topic['subject'][0..49].gsub( %r{</?[^>]+?>}, '' ) %><%= "..." if topic['subject'].length > 50 %></b><br/>
-                  <%= topic['content'][0..119].gsub( %r{</?[^>]+?>}, '' ) %><%= "..." if topic['content'].length > 120 %>
-            </div>
-      </li>
-      <% end %>
-</ul>
-
-
-<script>
-      function autoScroll() {
-          var itemHeight = $('#topiclist li').outerHeight();
-          /* calculte how much to move the scroller */
-          var moveFactor = parseInt($('#topiclist').css('top')) + itemHeight;
-          /* animate the carousel */
-          $('#topiclist').animate({
-              'top' : moveFactor
-          }, 'slow', 'linear', function(){
-              /* put the last item before the first item */
-              $("#topiclist li:first").before($("#topiclist li:last"));
-              /* reset top position */             
-              $('#topiclist').css({'top' : '-5em'});
-          });
-      };
-      /* make the carousel scroll automatically when the page loads */
-      var moveScroll = setInterval(autoScroll, 3000);
-</script>
+<% @topics.each do |topic| %>
+<li class=topic>
+      <div class=avatar>
+            <img width=50 height=50 src=<%= @companies[topic['company_id']] %>>
+      </div>
+      <div>
+            <!-- <img src=<%=topic['author']['avatar_url_medium']%>> -->
+      </div>
+      <div class=topictitle>
+            <b><%= topic['subject'][0..49].gsub( %r{</?[^>]+?>}, '' ) %><%= "..." if topic['subject'].length > 50 %></b><br/>
+            <%= topic['content'][0..119].gsub( %r{</?[^>]+?>}, '' ) %><%= "..." if topic['content'].length > 120 %>
+      </div>
+</li>
+<% end %>

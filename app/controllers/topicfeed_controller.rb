@@ -6,20 +6,46 @@ class TopicfeedController < ApplicationController
   SATISFACTION_API_URL = 'https://api.getsatisfaction.com'
 
   def index
+    session[:last_topic_id] = 1
   end
 
   def topics
-    result = api_call("/topics.json")
+    result = api_call("/topics.json?limit=8")
 
     @topics = result["data"]
 
     @companies = Hash.new #mapping ID <-> logo
     @topics.each { |topic|
-      topic_id = topic["company_id"]
-      puts topic_id
-      @companies[topic_id] = api_call("/companies/#{topic_id}.json")['logo']
+      company_id = topic["company_id"]
+      puts "[T-#{topic['id']}] [C-#{company_id}]"
+      @companies[company_id] = api_call("/companies/#{company_id}.json")['logo']
     }
 
+    render :layout => false
+  end
+
+  def last_topic
+    result = api_call("/topics.json?limit=1")
+
+    @new_topic = false
+    @topic = result["data"][0]
+
+    if session[:last_topic_id] != @topic['id']
+      @new_topic = true
+      session[:last_topic_id] = @topic['id']
+      company_id = @topic["company_id"]
+      puts "[T-#{@topic['id']}] [C-#{company_id}]"
+      @company_logo = api_call("/companies/#{company_id}.json")['logo']
+    else
+      random_topic_id = session[:last_topic_id].to_i - rand(10000)
+      puts "Random ID: #{random_topic_id} --> call /topics/#{random_topic_id}.json"
+      @topic = api_call("/topics/#{random_topic_id}.json")
+      @new_topic = true
+#      session[:last_topic_id] = @topic['id']
+      company_id = @topic["company_id"]
+      puts "[T-#{@topic['id']}] [C-#{company_id}]"
+      @company_logo = api_call("/companies/#{company_id}.json")['logo']
+    end
     render :layout => false
   end
 
