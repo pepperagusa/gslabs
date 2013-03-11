@@ -27,7 +27,7 @@ class TopicfeedController < ApplicationController
   def last_topic
     result = api_call("/topics.json?limit=1")
 
-    @new_topic = false
+#    @new_topic = false
     @topic = result["data"][0]
 
     if session[:last_topic_id] != @topic['id']
@@ -37,7 +37,7 @@ class TopicfeedController < ApplicationController
       puts "[T-#{@topic['id']}] [C-#{company_id}]"
       @company_logo = api_call("/companies/#{company_id}.json")['logo']
     else
-      random_topic_id = session[:last_topic_id].to_i - rand(10000)
+      random_topic_id = session[:last_topic_id].to_i - rand(1000)
       puts "Random ID: #{random_topic_id} --> call /topics/#{random_topic_id}.json"
       @topic = api_call("/topics/#{random_topic_id}.json")
       @new_topic = true
@@ -45,6 +45,9 @@ class TopicfeedController < ApplicationController
       puts "[T-#{@topic['id']}] [C-#{company_id}]"
       @company_logo = api_call("/companies/#{company_id}.json")['logo']
     end
+    
+    @new_topic = false if [63313,98154].include?(company_id.to_i)
+    
     render :layout => false
   end
 
