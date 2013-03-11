@@ -41,7 +41,6 @@ class TopicfeedController < ApplicationController
       puts "Random ID: #{random_topic_id} --> call /topics/#{random_topic_id}.json"
       @topic = api_call("/topics/#{random_topic_id}.json")
       @new_topic = true
-#      session[:last_topic_id] = @topic['id']
       company_id = @topic["company_id"]
       puts "[T-#{@topic['id']}] [C-#{company_id}]"
       @company_logo = api_call("/companies/#{company_id}.json")['logo']

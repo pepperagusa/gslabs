@@ -1,13 +1,10 @@
 <% if @new_topic %>
 <li class=topic>
       <div class=avatar>
-            <img width=50 height=50 src=<%= @company_logo %>>
-      </div>
-      <div>
-            <!-- <img src=<%=@topic['author']['avatar_url_medium']%>> -->
+            <a href=<%= @topic['at_sfn'] %> target=_blank><img width=50 height=50 src=<%= @company_logo %>></a>
       </div>
       <div class=topictitle>
-            <b><%= @topic['subject'][0..49].gsub( %r{</?[^>]+?>}, '' ) %><%= "..." if @topic['subject'].length > 50 %></b><br/>
+            <b><a href=<%= @topic['at_sfn'] %> target=_blank><%= @topic['subject'][0..49].gsub( %r{</?[^>]+?>}, '' ) %><%= "..." if @topic['subject'].length > 50 %></a></b><br/>
             <%= @topic['content'][0..119].gsub( %r{</?[^>]+?>}, '' ) %><%= "..." if @topic['content'].length > 120 %>
       </div>
 </li>
