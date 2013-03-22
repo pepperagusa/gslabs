@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Fastpass Site Simulation</title>
+
+  <style type="text/css">
+  html, body
+  {
+      font: 14px/165% verdana, arial, helvetica, sans-serif;
+      margin: 0;
+      padding: 0;
+  }
+  body
+  {
+      text-align: center;
+      background-color: white;
+  }
+  #live_area
+  {
+      text-align: center;
+  }
+  #header
+  {
+      text-align: center;
+      background: url("http://getsatisfaction.com/images/tiny-white-logo.png") black 10px 10px no-repeat;
+      padding: 0.5em 0;
+  }
+  #header h1
+  {
+      color: #fff;
+      font-family: "Helvetica", sans-serif;
+      letter-spacing: 0.05em;
+      font-size: 1.25em;
+  }
+  #content
+  {
+      display: inline-block;
+      text-align: left;
+      padding: 1em;
+  }
+  #footer
+  {
+      text-align: center;
+      font-size: 0.8em;
+      border-top: solid 1px;
+      padding-top: 1em;
+  }
+  #footer p
+  {
+      margin: 0 0 0.5em 0;
+  }
+  #message
+  {
+      font-size: 0.9em;
+      width: 60%;
+      text-align: left;
+      margin: 1em auto;
+      padding: 0.75em;
+      background-color: #ffffcc;
+      border: solid 1px #888;
+      box-shadow: 2px 2px 2px #888;
+      -moz-box-shadow: 2px 2px 2px #888;
+      -webkit-box-shadow: 2px 2px 2px #888;
+      display: none;
+  }
+  .note
+  {
+      color: #666;
+      font-size: 0.8em;
+  }
+  form#fastpass_credentials p
+  {
+      margin: 0.5em 0;
+  }
+  form#fastpass_credentials label
+  {
+      display: inline-block;
+      width: 10em;
+      vertical-align: top;
+      text-align: right;
+      font-variant: small-caps;
+      letter-spacing: 0.02em;
+      padding: 0.5em 1em 0.5em 0;
+      font-size: 0.9em;
+  }
+  form#fastpass_credentials p.submit
+  {
+      padding-left: 10em;
+  }
+  form#fastpass_credentials .note
+  {
+      display: block;
+      margin-left: 13em;
+  }
+  form#fastpass_credentials input[type=text],
+  form#fastpass_credentials textarea
+  {
+      font-size: 1em;
+      padding: 0.5em;
+      border: solid 1px #ddd;
+      background-color: #fff;
+      width: 20em;
+  }
+  form#fastpass_credentials input[type=text]:focus,
+  form#fastpass_credentials textarea:focus
+  {
+      border-color: #000;
+      background-color: #ffffcc;
+  }
+  form#fastpass_credentials input[type=checkbox]
+  {
+      vertical-align: middle;
+  }
+  #dialog
+  {
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0, 0.7);
+      position: fixed;
+      top: 0;
+      left: 0;
+      text-align: center;
+  }
+  #dialog .content
+  {
+      min-width: 400px;
+      min-height: 300px;
+      background-color: #fff;
+      display: inline-block;
+      text-align: left;
+      margin-top: 150px;
+      padding: 1em;
+      border-radius: 6px;
+      -moz-border-radius: 6px;
+      -webkit-border-radius: 6px;
+      box-shadow: 5px 5px 5px #111;
+      -moz-box-shadow: 5px 5px 5px #111;
+      -webkit-box-shadow: 5px 5px 5px #111;
+  }
+  </style>
+  <script type="text/javascript" src="http://twitter.github.com/bootstrap/assets/js/bootstrap-tooltip.js"></script>
+  <!-- OAuth      --><script type="text/javascript" src="http://oauth.googlecode.com/svn/code/javascript/oauth.js"></script>
+  <!-- OAuth SHA1 --><script type="text/javascript" src="http://oauth.googlecode.com/svn/code/javascript/sha1.js"></script>
+  <script type="text/javascript" src="http://getsatisfaction.com/javascripts/fastpass.js" id="fastpass_common"></script>
+  <script type="text/javascript">
+  /**
+   * See <http://oauth.googlecode.com/svn/code/javascript/>.
+   */
+  $(function(){
+
+      $('#content').tooltip({
+        selector: "input[data-toggle=tooltip]"
+      })
+      
+      
+      //////////
+      // Main //
+      //////////
+
+      var exc;
+      var $form = $('#fastpass_credentials');
+
+      $form.submit(function(evt) {
+          try {
+              handleFormSubmit();
+          } catch(exc) {
+              // ignore //
+          } finally {
+              return false;
+          }
+      });
+
+      ///////////////
+      // Functions //
+      ///////////////
+
+      function handleFormSubmit() {
+
+          var callbackUrl = generateOauthSignedUrl();
+
+          $('script#fastpass').remove();
+          $('<script/>', {src: callbackUrl, type: 'text/javascript', id: 'fastpass'}).appendTo('head');
+
+          openDialog(
+             "<p>Fastpass URL<br/>" +
+             "<pre>    " + callbackUrl.replace(/&/g, '\n      &') +
+             "</pre></p>"
+          );
+      }
+
+      function openDialog(html) {
+
+          if(!$('#dialog').size()) {
+              $(
+                '<div id="dialog">' +
+                  '<div class="content">' +
+                    '<div class="message"></div>' +
+                    '<p><input type="button" class="btn btn-primary close-modal" value="Close"/></p>' +
+                  '</div>' +
+                '</div>'
+              ).appendTo('body')
+               .click(function(evt){
+                    if($(evt.target).hasClass('close-modal')) {
+                        $(this).hide().find('.message').empty().end();
+                    }
+               });
+          }
+
+          $('#dialog .message').html(html).slideDown();
+      }
+
+      function generateOauthSignedUrl() {
+
+          var fastpassUrlProtocol = $('#is_secure').attr('checked') ? 'https://' : 'http://';
+          var fastpassUrlHost =  $('#host').val() || 'getsatisfaction.com';
+          var fastpassUrlPath =  '/fastpass';
+
+          var accessor = {
+              consumerSecret: $('#consumer_secret').val()
+          };
+          var message = {
+              method:     'GET',
+              action:     fastpassUrlProtocol + fastpassUrlHost + fastpassUrlPath,
+              parameters: OAuth.decodeForm( $('#additional_parameters').val() )
+          };
+
+          message.parameters.push(
+              ['oauth_version',          '1.0'],
+              ['oauth_timestamp',        Math.round((new Date()).getTime() / 1000)],
+              ['oauth_nonce',            OAuth.nonce(11)],
+              ['oauth_signature_method', 'HMAC-SHA1']
+          );
+
+          $(':input', $form).each(function(){
+              if( (!$(this).is(':checkbox, :radio') || $(this).attr('checked'))
+               && !$(this).hasClass('exclude')) {
+                  message.parameters.push([$(this).attr('name'), $(this).val()]);
+              }
+          });
+
+          OAuth.SignatureMethod.sign(message, accessor);
+          var urlParams = OAuth.SignatureMethod.normalizeParameters(message.parameters);
+          var signatureParam = OAuth.percentEncode(OAuth.getParameter(message.parameters, "oauth_signature"));
+
+          return message.action + '?' + urlParams + '&oauth_signature=' + signatureParam;
+      }
+
+  });
+  </script>
+</head>
+
+
+<body>
+
+  <div id="live_area">
+  
+    <div id="header">
+      <h4 class=muted>Fastpass Login Simulator</h4>
+    </div>
+        
+    <div id="content">
+    
+      <form id="fastpass_credentials" method="get">
+        <p>
+          <label for="is_secure">Use HTTPS?</label>
+          <input type="checkbox" id="is_secure" name="is_secure" value="1" class="exclude" />
+        </p>
+        <p>
+          <label for="host">Host</label>
+          <input type="text" id="host" name="host" value="" class="exclude" title="community.yourdomain.com   (if not CNAMEd: getsatisfaction.com)" data-toggle="tooltip" />
+        </p>
+        <p>
+          <label for="oauth_consumer_key">Consumer Key</label>
+          <input type="text" id="oauth_consumer_key" name="oauth_consumer_key" value=""/>
+        </p>
+        <p>
+          <label for="consumer_secret">Consumer Secret</label>
+          <input type="text" id="consumer_secret" name="consumer_secret" value="" size="40" class="exclude"/>
+        </p>
+        <p>
+          <label for="email">Email</label>
+          <input type="text" id="email" name="email" value=""/>
+        </p>
+        <p>
+          <label for="name">User Name</label>
+          <input type="text" id="name" name="name" value=""/>
+        </p>
+        <p>
+          <label for="uid">User ID</label>
+          <input type="text" id="uid" name="uid" value=""/>
+        </p>
+        <p>
+          <label for="additional_parameters">Other&nbsp;Params</label>
+          <input type="text" id="additional_parameters" name="additional_parameters" class="exclude" title="e.g. twitter_id=jargon&foo=bar" data-toggle="tooltip" ></input>
+        </p>
+        <p class="submit">
+          <input type="submit" name="" value="Simulate Fastpass Login" class="btn btn-large btn-primary"/>
+        </p>
+      </form>
+    
+    </div>
+  
+  </div>
+
+</body>
+</html>

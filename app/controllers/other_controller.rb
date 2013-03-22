@@ -9,17 +9,23 @@ class OtherController < ApplicationController
   FASTPASS_KEY    = "62628zw63njo"
   FASTPASS_SECRET = "m6zc7qfx2s749zy57pre6w23589b1ke4"
 
-  def get_fastpass_uid
+  # this method returns a JSON with the faspass UID of a given canonical_name
+  # e.g. /other/get_fastpass_uid.json?canonical=pepperagusa
+  def get_fastpass_data
     canonicalName = params['canonical']
     respond_to do |format|
       if canonicalName then
         identity = api_call_2_legged("/people/#{canonicalName}/identity")
         if !identity["nodata"] and identity["custom_attributes"] then
-          @fastpassUid = identity["custom_attributes"]["uid"]
+          identity = identity["custom_attributes"]
         end
-        format.json { render :layout => false, :text => "{ \"fastpass_uid\" : \"#{@fastpassUid}\" }" }
+        format.json { render :layout => false, :text => "#{identity}" }
       end
     end
+  end
+  
+  # the fastpass simulator is a full HTML5 
+  def fpsimulator
   end
   
   def api_call(endpoint)
