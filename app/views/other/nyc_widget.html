@@ -8,8 +8,8 @@
   #left_widget_tab a {
     top: 25%;
     left: 0;
-    width: 42px;
-    height: 102px;
+    width: 32px;
+    height: 82px;
     color: white;
     cursor: pointer;
     text-indent: -100000px;
@@ -18,7 +18,7 @@
     z-index: 100000;
     margin-left: -7px;
     background-color: #007;
-    background-image: url(http://s3.amazonaws.com/getsatisfaction.com/images/feedback_trans_tab.png);
+/*    background-image: url(http://s3.amazonaws.com/getsatisfaction.com/images/feedback_trans_tab.png); */
   }
   #left_widget_tab a:hover { margin-left: -4px; }
 </style>
@@ -30,10 +30,15 @@
 	  <a data-toggle="modal" href="#myModal"></a>
 	</div>
 
+	<div id="widget_link">
+	  <a data-toggle="modal" href="#myModal">Click this link</a>
+	</div>
+	<br/><br/><br/>
+	or this tab:
 	<div class="modal hide" id="myModal" style="width: 800px; margin-left:-400px;">
 	  <div class="modal-header">
 	    <button type="button" class="close" data-dismiss="modal">x</button>
-	    <h5 style="color: red;">NOTE: Any question you ask here is going to be public in the community...</h5>
+	    <h5 style="color: red;">Custom text here...</h5>
 	  </div>
 	  <div class="modal-body">
 	    <div id="getsat-widget-4795"></div>
