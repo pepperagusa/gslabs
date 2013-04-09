@@ -1,0 +1,43 @@
+<style>
+  #left_widget_tab a {
+    top: 150px;
+    left: 0;
+    width: 32px;
+    height: 82px;
+    color: white;
+    cursor: pointer;
+    text-indent: -100000px;
+    overflow: hidden;
+    position: fixed;
+    z-index: 100000;
+    margin-left: -7px;
+    background-color: #007;
+/*    background-image: url(http://s3.amazonaws.com/getsatisfaction.com/images/feedback_trans_tab.png); */
+  }
+  #left_widget_tab a:hover { margin-left: -4px; }
+</style>
+
+<div id="left_widget_tab">
+  <a data-toggle="modal" href="#myModal"></a>
+</div>
+
+<div id="widget_link">
+  <a data-toggle="modal" href="#myModal">Click this link</a>
+</div>
+<br/>
+or this tab:
+<div class="modal hide" id="myModal" style="width: 800px; margin-left:-400px;">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">x</button>
+    <h5 style="color: red;">Custom text here...</h5>
+  </div>
+  <div class="modal-body">
+<!-- beginning of GetSat widget snippet -->
+    <div id="getsat-widget-4795"></div>
+    <script type="text/javascript" src="https://loader.engage.gsfn.us/loader.js"></script>
+    <script type="text/javascript">
+    if (typeof GSFN !== "undefined") { GSFN.loadWidget(4795,{"containerId":"getsat-widget-4795"}); }
+    </script>
+<!-- end of GetSat eidget snippet -->
+  </div>
+</div>

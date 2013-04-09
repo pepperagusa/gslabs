@@ -24,10 +24,6 @@ class OtherController < ApplicationController
     end
   end
   
-  # the fastpass simulator is a full HTML5 
-  def fpsimulator
-  end
-  
   def api_call(endpoint)
     uri = URI.parse(URI.encode(SATISFACTION_API_URL + endpoint))
     http = Net::HTTP.new(uri.host, uri.port)
