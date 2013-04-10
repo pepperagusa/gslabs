@@ -4,14 +4,9 @@
   <title>GetSat Labs</title>
 
   <%= stylesheet_link_tag "application" %>
+  <link href="/stylesheets/styles.css" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" href="http://twitter.github.io/bootstrap/assets/css/bootstrap.css">
-  <link rel="stylesheet" href="http://twitter.github.io/bootstrap/assets/css/bootstrap-responsive.css">
-  <style type="text/css">
-    body {
-      padding-top: 60px;
-      padding-bottom: 40px;
-    }
-  </style>
+<!--  <link rel="stylesheet" href="http://twitter.github.io/bootstrap/assets/css/bootstrap-responsive.css"> -->
 
   <%= javascript_include_tag "application" %>
   <script src="http://code.jquery.com/jquery-latest.js"></script>
@@ -19,12 +14,45 @@
   <script src="http://twitter.github.io/bootstrap/assets/js/bootstrap-modal.js"></script>
 
 
+  <!-- http://stackoverflow.com/questions/7203304/warning-cant-verify-csrf-token-authenticity-rails -->
   <%= csrf_meta_tags %>
+  <script type="text/javascript">
+    jQuery(document).ajaxSend(function(e, xhr, options) {
+      var token = $("meta[name='csrf-token']").attr("content");
+      xhr.setRequestHeader("X-CSRF-Token", token);
+    });
+  </script>
 
 </head>
 <body>
-
-<%= yield %>
-
+  <div id=container>
+    <div id="headerContainer">
+      <div id="header">
+        <div id="logo"><a href="/"><img src="/images/logo.png" width="266" height="75" border="0"/></a></div>
+        <div id="tagline">Communities That Mean <span style="color:#F00">Open API Architecture</span></div>
+        <div id="topLinks"><a href="https://getsatisfaction.com/corp/help/api-resources">API docs</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="/other/about.html">About</a></div>
+      </div>
+    </div>
+  
+    <div id="bodyContainer">
+      <%= yield %>
+    </div>
+    
+    <!-- Google Code -->
+    <script type="text/javascript">
+    
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-39996534-1']);
+      _gaq.push(['_setDomainName', 'gslabs.heroku.com']);
+      _gaq.push(['_trackPageview']);
+    
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    
+    </script>
+  </div>
 </body>
 </html>

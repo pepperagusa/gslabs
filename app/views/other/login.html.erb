@@ -1,0 +1,6 @@
+<%= form_tag({:action => 'login_action'}, :class => "form-inline pull-left") %>
+  <%= text_field("loginform", "username", :class => "input-large", :placeholder => "username") %>
+  <%= password_field("loginform", "password", :class => "input-large", :placeholder => "password") %>
+  <%= hidden_field("loginform", "return_url", :value => params[:return_url]) %>
+  <%= submit_tag "Sign in", :class => "btn" %>
+</form>

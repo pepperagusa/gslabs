@@ -1,35 +1,16 @@
-<div class="navbar navbar-fixed-top">
+<div class="navbar">
   <div class="navbar-inner">
-    <div class="container">
-<!--
-      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </a>
--->
-      <a class="brand" href="#">Community Users Explorer</a>
-<!--
-    <div class="nav-collapse">
-        <ul class="nav">
-          <li class="active"><a href="#">Home</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-    </div>
--->
-      <form class="form-inline pull-left" style="margin: 6px;" id="search">
-        <input type="text" name="companyslug" class="input-medium" placeholder="community">
-        <input type="text" name="username" class="input-medium" placeholder="username">
-        <input type="password" name="password" class="input-medium" placeholder="password">
-        <input type="text" name="fastpasskey" class="input-medium" placeholder="fastpass key">
-        <input type="text" name="fastpasssecret" class="input-medium" placeholder="fastpass secret">
-        <button type="submit" class="btn" style="margin-top:0px;">Go!</button>
-      </form>
-      
-    </div>
+    <a class="brand" href="#">Community Members Explorer</a>
+    <a href=# class="btn" onclick=logout()>Sign out</a>
   </div>
 </div>
+
+<form class="form-inline pull-left" style="margin: 6px;" id="search">
+  <input type="text" name="companyslug" class="input-medium" placeholder="community">
+  <input type="text" name="fastpasskey" class="input-medium" placeholder="fastpass key">
+  <input type="text" name="fastpasssecret" class="input-medium" placeholder="fastpass secret">
+  <button type="submit" class="btn" style="margin-top:0px;">Go!</button>
+</form>
 
 <div class="container-fluid" id=people>
 </div>

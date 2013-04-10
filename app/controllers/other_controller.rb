@@ -8,6 +8,35 @@ class OtherController < ApplicationController
   # Fastpass pair for pepperagusa
   FASTPASS_KEY    = "62628zw63njo"
   FASTPASS_SECRET = "m6zc7qfx2s749zy57pre6w23589b1ke4"
+  
+  def login
+  end
+  
+  def login_action
+    result = api_call("/me.json", params[:loginform][:username], params[:loginform][:password])
+    puts "--------------------My User ID: #{result['id']} #{params[:loginform][:username]}, #{params[:loginform][:password]}----------------------"
+    if result['id'] then
+      session[:is_valid] = true
+      session[:username] = params[:loginform][:username]
+      session[:password] = params[:loginform][:password]
+      puts "===============#{params[:loginform][:return_url]}=============="
+      redirect_to params[:loginform][:return_url]
+    else
+      session[:is_valid] = false
+#      render ...
+    end
+  end
+  
+  def logout
+    reset_session
+    
+    session[:is_valid] = false
+    
+    respond_to do
+      |format| format.html { render :nothing => true }
+    end
+  end
+
 
   # this method returns a JSON with the faspass UID of a given canonical_name
   # e.g. /other/get_fastpass_uid.json?canonical=pepperagusa
@@ -22,22 +51,6 @@ class OtherController < ApplicationController
         format.json { render :layout => false, :text => "#{identity}" }
       end
     end
-  end
-  
-  def api_call(endpoint)
-    uri = URI.parse(URI.encode(SATISFACTION_API_URL + endpoint))
-    http = Net::HTTP.new(uri.host, uri.port)
-    request = Net::HTTP::Get.new(uri.request_uri, {'Content-Type' => 'application/json', 'Accept'=> 'application/json'})
-    response = http.request(request)
-    JSON.parse(response.body)
-  end
-  
-  def api_call_2_legged(endpoint)
-    consumer = OAuth::Consumer.new(FASTPASS_KEY, FASTPASS_SECRET, :site => SATISFACTION_API_URL, :http_method => :get)
-    access_token = OAuth::AccessToken.new(consumer)
-    request_headers = {'Content-Type' => 'application/json'}
-    response = access_token.get(endpoint, request_headers)
-    (response.code == "200") ? JSON.parse(response.body) : { "nodata" => "true"}
   end
   
 end

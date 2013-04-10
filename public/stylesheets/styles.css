@@ -1,0 +1,562 @@
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+#container {
+	width: 100%;
+}
+#container #headerContainer {
+	background-color: #000000;
+	position: relative;
+	height: 111px;
+	width: 100%;
+	left: 1px;
+	background-image: url(/images/BG-gradient-header.jpg);
+	background-repeat: repeat-x;
+}
+#container #headerContainer #header {
+	height: 111px;
+	width: 946px;
+	margin-right: auto;
+	margin-left: auto;
+	position: relative;
+	top: 0px;
+}
+#container #headerContainer #header #Phone {
+	font-family: BentonSans-Light, BentonSans, Helvetica, sans;
+	font-size: 16px;
+	color: #FFF;
+	position: absolute;
+	right: 0px;
+	top: 20px;
+}
+#container #headerContainer #header #Phone {
+	font-family: BentonSans-Light, BentonSans, Helvetica, sans;
+	font-size: 18px;
+	color: #FFF;
+	position: absolute;
+	right: 0px;
+	bottom: 20px;
+	width: 252px;
+	text-align: right;
+}
+#container #headerContainer #header #tagline {
+	font-family: BentonSans-Light, BentonSans, Helvetica, sans;
+	font-size: 14px;
+	color: #FFF;
+	position: absolute;
+	right: 0px;
+	bottom: 19px;
+	width: 383px;
+	text-align: right;
+	vertical-align: bottom;
+}
+#container #headerContainer #header #logo {
+	position: absolute;
+	width: 266px;
+/*	left: -19px;  */
+	height: 75px;
+	bottom: 20px;
+}
+#header #topLinks {
+	display: block;
+	position: absolute;
+	left: 262px;
+	bottom: 17px;
+	color: #FFF;
+	font-size: 14px;
+	width: 233px;
+	background-position: 150px;
+	text-align: right;
+}
+a:link {
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	color: #F00;
+	font-size: 16px;
+	text-decoration: none;
+}
+a:visited {
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	color: #F00;
+	font-size: 16px;
+	text-decoration: none;
+}
+a:hover {
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	color: #f27d3c;
+	font-size: 16px;
+	text-decoration: none;
+}
+a:active {
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	color: #F00;
+	font-size: 16px;
+	text-decoration: none;
+}
+#container #banner {
+	position: relative;
+	height: 250px;
+	width: 946px;
+	margin-right: auto;
+	margin-left: auto;
+}
+#banner #bannerCopy {
+	position: absolute;
+	top: 90px;
+	left: 0px;
+	width: 607px;
+	height: 122px;
+}
+.headerText {
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	font-size: 26px;
+	color: #F00;
+	display: block;
+	margin-bottom: 10px;
+}
+.subHeaderText {
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	font-size: 20px;
+	line-height:30px;
+	color: #666;
+	display: block;
+	margin-bottom: 20px;
+}
+.subHeaderBodyText {
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	font-size: 15px;
+	color: #666;
+	display: block;
+	margin-bottom: 10px;
+	line-height: 22px;
+}
+#header #linkStar {
+	background-image: url(/images/star-hover.png);
+	position: absolute;
+	height: 32px;
+	width: 85px;
+	left: 598px;
+	bottom: 10px;
+}
+#banner #conferenceLogo {
+	position: absolute;
+	height: 201px;
+	width: 301px;
+	right: 0px;
+	top: 51px;
+}
+
+
+/*
+Edit the height of this div to accommodate a new row of API callouts on the home page / API page
+*/
+#headerContainer #bodyContainer {
+	background-image: url(/images/icon-bg.png);
+	position: relative;
+	width: 100%;
+	background-color: #000;
+	background-repeat: repeat;
+/*	height: 540px; */
+}
+#container #headerContainer #bodyContainer #calloutsContainer {
+	position: relative;
+	height: 500px;
+	width: 946px;
+	margin-right: auto;
+	margin-left: auto;
+}
+#container #headerContainer #bodyContainer #calloutsContainerPushDown {
+	position: relative;
+	height: 388px;
+	width: 946px;
+	margin-right: auto;
+	margin-left: auto;
+}
+#calloutsContainer #whiteHeaderText {
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	font-size: 32px;
+	color: #FFF;
+	width: 946px;
+	text-align: center;
+	position: absolute;
+	top: 40px;
+}
+#calloutsContainer #callout1 {
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	font-size: 16px;
+	color: #ccc;
+	width: 285px;
+	text-align: center;
+	position: absolute;
+	top: 105px;
+	left: 0px;
+	line-height: 26px;
+}
+#calloutsContainer #callout2 {
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	font-size: 16px;
+	color: #ccc;
+	width: 285px;
+	text-align: center;
+	position: absolute;
+	top: 105px;
+	left: 332px;
+	line-height: 26px;
+}
+#calloutsContainer #callout3 {
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	font-size: 16px;
+	color: #ccc;
+	width: 285px;
+	text-align: center;
+	position: absolute;
+	top: 105px;
+	left: 661px;
+	line-height: 26px;
+}
+#calloutsContainerPushDown #callout1 {
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	font-size: 16px;
+	color: #ccc;
+	width: 285px;
+	text-align: center;
+	position: absolute;
+	top: 20px;
+	left: 0px;
+	line-height: 26px;
+}
+#calloutsContainerPushDown #callout2 {
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	font-size: 16px;
+	color: #ccc;
+	width: 285px;
+	text-align: center;
+	position: absolute;
+	top: 20px;
+	left: 332px;
+	line-height: 26px;
+}
+#calloutsContainerPushDown #callout3 {
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	font-size: 16px;
+	color: #ccc;
+	width: 261px;
+	text-align: center;
+	position: absolute;
+	top: 20px;
+	left: 661px;
+	line-height: 26px;
+}
+.calloutHeader {
+	height: 40px;
+	top: 30px;
+}
+#bodyContainer #bottomBanner {
+	position: relative;
+	height: 458px;
+	width: 946px;
+	margin-right: auto;
+	margin-left: auto;
+	left: -4;
+}
+#container #footerContainer {
+	position: relative;
+	height: 116px;
+	width: 100%;
+	background-color: #650d6a;
+	margin-top: 200px;
+}
+#footerContainer #footer {
+	height: 111px;
+	width: 946px;
+	margin-right: auto;
+	margin-left: auto;
+	position: relative;
+}
+#footer #social {
+	position: absolute;
+	height: 80px;
+	width: 300px;
+	top: 20px;
+	left: 0px;
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	font-size: 16px;
+	color: #fff;
+}
+#footer #bottomLinks {
+	position: absolute;
+	top: 20px;
+	right: 0px;
+	width: 542px;
+	text-align: right;
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	font-size: 16px;
+	color: #fff;
+}
+
+/* Internal Pages
+CSS and main body
+attributes below. */
+
+#container #contentContainer {
+	width: 946px;
+	margin-right: auto;
+	margin-left: auto;
+	position: relative;
+	margin-top: 50px;
+}
+#container #footerContainerInternals {
+	position: relative;
+	height: 116px;
+	width: 100%;
+	background-color: #650d6a;
+	margin-top: 80px;
+}
+#footerContainerInternals #footer {
+	height: 111px;
+	width: 946px;
+	margin-right: auto;
+	margin-left: auto;
+	position: relative;
+}
+#headerContainer #bannerInternals {
+	height: 200px;
+	width: 100%;
+	margin-right: auto;
+	margin-left: auto;
+	background-color: #eeeeee;
+}
+#bannerInternals #InternalsCase {
+	height: 200px;
+	width: 946px;
+	margin-right: auto;
+	margin-left: auto;
+	position: relative;
+}
+.logoInternals {
+	position: absolute;
+	height: 168px;
+	width: 155px;
+	top: 24px;
+	left: 210px;
+}
+.headerCopyInternals {
+	position: absolute;
+	height: 103px;
+	width: 540px;
+	top: 8px;
+	left: 383px;
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	font-size: 28px;
+	color: #650d6a;
+	display: block;
+	padding-top: 70px;
+}
+.aboutParagraphContainer {
+	width: 946px;
+	margin-bottom: 50px;
+	position: relative;
+	height: 270px;
+}
+.aboutTopHeading {
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	font-size: 20px;
+	color: #650d6a;
+	width: 946px;
+	margin-bottom:3px;
+	display:block
+}
+.aboutSubHeading {
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	font-size: 18px;
+	color: #666666;
+	width: 946px;
+	margin-bottom:10px;
+	display:block
+}
+.aboutPicLeft {
+	height: 209px;
+	width: 289px;
+	margin-top: auto;
+	margin-bottom: auto;
+	position: relative;
+	float: left;
+}
+.aboutParagraph {
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	font-size: 16px;
+	line-height:24px;
+	color: #000;
+	float: right;
+	position: relative;
+	width: 630px;
+	margin-top: auto;
+	margin-bottom: auto;
+	height: 210px;
+}
+.aboutParagraphRight {
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	font-size: 16px;
+	line-height: 24px;
+	color: #000;
+	float: left;
+	position: relative;
+	width: 630px;
+	margin-top: auto;
+	margin-bottom: auto;
+	height: 210px;
+}
+.aboutPicRight {
+	height: 209px;
+	width: 289px;
+	margin-top: auto;
+	margin-bottom: auto;
+	position: relative;
+	float: right;
+}
+.bottomCallout {
+	width: 946px;
+	text-align:center;
+}
+a.orangeText:link {
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	color: #f27d3c;
+	font-size: 20px;
+	text-decoration: underline;
+}
+a.orangeText:visited {
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	color: #f27d3c;
+	font-size: 20px;
+	text-decoration: underline;
+}
+a.orangeText:hover {
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	color:  #650d6a;
+	font-size: 20px;
+	text-decoration: none;
+}
+a.orangeText:active {
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	color: #f27d3c;
+	font-size: 20px;
+	text-decoration: underline;
+}
+.cellHeaderBlack {
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	font-size: 20px;
+	color: #000000;
+}
+.cellHeaderBlackSmall {
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	font-size: 16px;
+	color: #000000;
+}
+.cellSubheaderCopy {
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	font-size: 14px;
+	color: #666;
+	display: block;
+	padding-top: 5px;
+	line-height: 18px;
+}
+.borderCell {
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #f27d3c;
+	font-weight: bold;
+	border: 1px solid #D5d5d5;
+}
+.borderCellNoTop {
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #f27d3c;
+	font-weight: bold;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-right-color: #D5d5d5;
+	border-bottom-color: #D5d5d5;
+	border-left-color: #D5d5d5;
+}
+.borderCellNoLeftNoTopPurple {
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	font-size: 20px;
+	color: #650d6a;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-right-color: #D5d5d5;
+	border-bottom-color: #D5d5d5;
+	padding: 10px;
+}
+.borderCellNNoTopPurple {
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	font-size: 20px;
+	color: #650d6a;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-right-color: #D5d5d5;
+	border-bottom-color: #D5d5d5;
+	border-left-color: #D5d5d5;
+	padding: 10px;
+}
+.borderCellPurple {
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	font-size: 20px;
+	color: #650d6a;
+	padding: 10px;
+	border: 1px solid #D5d5d5;
+}
+.borderCellNoTopNoBottomPurple {
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	font-size: 20px;
+	color: #650d6a;
+	padding: 10px;
+	border-right-width: 1px;
+	border-left-width: 1px;
+	border-right-style: solid;
+	border-left-style: solid;
+	border-right-color: #D5d5d5;
+	border-left-color: #D5d5d5;
+}
+.borderCellNoTopNoRight {
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #f27d3c;
+	font-weight: bold;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-bottom-color: #D5d5d5;
+	border-left-color: #D5d5d5;
+}
+.borderCellNoRight {
+	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #f27d3c;
+	font-weight: bold;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-bottom-color: #D5d5d5;
+	border-left-color: #D5d5d5;
+	border-top-width: 1px;
+	border-top-style: solid;
+	border-top-color: #D5d5d5;
+}
+#contentContainer #accommodations {
+	margin-bottom: 50px;
+}

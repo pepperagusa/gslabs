@@ -6,28 +6,8 @@ class UsersearchController < ApplicationController
   SATISFACTION_API_URL = 'https://api.getsatisfaction.com'
 
   def index
-  end
-
-  def login
-    result = api_call("/me.json", params['username'], params['password'])
-    puts "--------------------My User ID: #{result['id']}----------------------"
-    if result['id'] == nil then
-      session[:is_valid] = false
-    else
-      session[:is_valid] = true
-
-      session[:username] = params['username']
-      session[:password] = params['password']
-    end
-    respond_to do
-      |format| format.html { render :nothing => true }
-    end
-  end
-  
-  def logout
-    session[:is_valid] = false
-    respond_to do
-      |format| format.html { render :nothing => true }
+    if !session[:is_valid] then
+      redirect_to "/other/login?return_url=/usersearch"
     end
   end
 
@@ -48,20 +28,6 @@ class UsersearchController < ApplicationController
       end
     }
     render :layout => false
-  end
-
-  private
-
-  def api_call(endpoint, username = "", password = "")
-    uri = URI.parse(URI.encode(SATISFACTION_API_URL + endpoint))
-    http = Net::HTTP.new(uri.host, uri.port)
-    http.use_ssl = true
-    request = Net::HTTP::Get.new(uri.request_uri, {'Content-Type' => 'application/json', 'Accept'=> 'application/json'})
-    if (username != "" and password != "")
-      request.basic_auth(username, password)
-    end
-    response = http.request(request)
-    JSON.parse(response.body)
   end
 
 end

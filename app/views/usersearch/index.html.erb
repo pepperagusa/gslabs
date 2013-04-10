@@ -1,30 +1,20 @@
 <div id=wrapper>
-  <div class="navbar navbar-fixed-top">
+  <div class="navbar">
     <div class="navbar-inner">
-      <div class="container">
-        <a class="brand" href="#">User Activity Explorer</a>
-        <form class="form-inline pull-left" style="padding-top: 6px;" id="authform">
-          <input type="text" name=username class="input-large" placeholder="Email">
-          <input type="password" name=password class="input-medium" placeholder="Password">
-          <a href=# class="btn" onclick=authenticate() style="margin-top:0px;">Sign in</a>
-        </form>
-        <form class="form-inline pull-left" id="logout" style="display: none;">
-          <a href=# class="btn" onclick=logout()>Sign out</a>
-        </form>
-        <div class="pull-right" style="font-size:12px;">&copy; <a href="http://getsatisfaction.com">Get Satisfaction</a> Labs, 2012</div>
-      </div>
+        <a class="brand" href="#">User Manager</a>
+        <a href=# class="btn" onclick=logout()>Sign out</a>
     </div>
   </div>
   
   <div id=content>
 
     <div class="container-fluid">
-      <form class="form-horizontal" id="memberform" style="display: none;">
+      <form class="form-horizontal" id="memberform">
         <fieldset>
           <div class="control-group">
             <label class="control-label" for="input01">Community</label>
             <div class="controls">
-              <input type="text" name=company_slug class="input-medium" placeholder="e.g. photoshop_family">
+              <input type="text" name=company_slug class="input-large" placeholder="e.g. photoshop_family">
             </div>
             <br />
             <label class="control-label" for="input01">Member's email address</label>
@@ -46,34 +36,11 @@
 </div>
 
 <script type="text/javascript">
-    function authenticate()
-    {
-        jQuery.post("/usersearch/login", jQuery("#authform").serialize(), function(data) {
-            if (data == "Authentication failed") {
-              jQuery('#topics').html(data);
-            } else {
-              jQuery('#authform').hide();
-              jQuery('#logout').show();
-              jQuery('#memberform').show();
-            }
-        });
-    }
-    
     function showtopics()
     {
         jQuery('#topics').empty().html('<center><img src="/assets/loader.gif" /></center>');
         jQuery.post("/usersearch/topics", jQuery("#memberform").serialize(), function(data) {
           jQuery('#topics').html(data);
-        });
-    }
-    
-    function logout()
-    {
-        jQuery.get("/usersearch/logout", function(data) {
-          jQuery('#topics').empty();
-          jQuery('#authform').show();
-          jQuery('#logout').hide();
-          jQuery('#memberform').hide();
         });
     }
 

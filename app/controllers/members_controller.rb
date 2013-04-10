@@ -12,12 +12,10 @@ class MembersController < ApplicationController
 
   def people
     @current_page = 1
-    if params['username'] then session[:username] = params['username'] end
-    if params['password'] then session[:password] = params['password'] end
+    if params['companyslug'] then session[:companyId] = api_call("/companies/#{params['companyslug']}")["id"] end
     if params['fastpasskey'] then session[:fastpasskey] = params['fastpasskey'] end
     if params['fastpasssecret'] then session[:fastpasssecret] = params['fastpasssecret'] end
     if params['page'] then @current_page = params['page'].to_i end
-    if params['companyslug'] then session[:companyId] = api_call("/companies/#{params['companyslug']}")["id"] end
     
     @something_wrong = false
     
