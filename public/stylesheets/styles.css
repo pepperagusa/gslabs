@@ -71,25 +71,25 @@ body {
 	background-position: 150px;
 	text-align: right;
 }
-a:link {
+#headerContainer a:link {
 	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
 	color: #F00;
 	font-size: 16px;
 	text-decoration: none;
 }
-a:visited {
+#headerContainer a:visited {
 	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
 	color: #F00;
 	font-size: 16px;
 	text-decoration: none;
 }
-a:hover {
+#headerContainer a:hover {
 	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
 	color: #f27d3c;
 	font-size: 16px;
 	text-decoration: none;
 }
-a:active {
+#headerContainer a:active {
 	font-family: BentonSans-Light, Helvetica-Light, Helvetica, sans-serif;
 	color: #F00;
 	font-size: 16px;
@@ -559,4 +559,11 @@ a.orangeText:active {
 }
 #contentContainer #accommodations {
 	margin-bottom: 50px;
+}
+
+
+#content {
+	padding: 20px;
+	width: 946px;
+	margin: 0px auto;
 }

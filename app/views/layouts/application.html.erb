@@ -6,12 +6,12 @@
   <%= stylesheet_link_tag "application" %>
   <link href="/stylesheets/styles.css" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" href="http://twitter.github.io/bootstrap/assets/css/bootstrap.css">
-<!--  <link rel="stylesheet" href="http://twitter.github.io/bootstrap/assets/css/bootstrap-responsive.css"> -->
 
   <%= javascript_include_tag "application" %>
   <script src="http://code.jquery.com/jquery-latest.js"></script>
   <script src="http://twitter.github.io/bootstrap/assets/js/bootstrap-dropdown.js"></script>
   <script src="http://twitter.github.io/bootstrap/assets/js/bootstrap-modal.js"></script>
+  <script src="http://twitter.github.io/bootstrap/assets/js/bootstrap-tooltip.js"></script>
 
 
   <!-- http://stackoverflow.com/questions/7203304/warning-cant-verify-csrf-token-authenticity-rails -->
@@ -20,6 +20,12 @@
     jQuery(document).ajaxSend(function(e, xhr, options) {
       var token = $("meta[name='csrf-token']").attr("content");
       xhr.setRequestHeader("X-CSRF-Token", token);
+    });
+
+    jQuery(function(){
+      jQuery('#content').tooltip({
+        selector: "input[data-toggle=tooltip]"
+      })
     });
   </script>
 
@@ -30,11 +36,11 @@
       <div id="header">
         <div id="logo"><a href="/"><img src="/images/logo.png" width="266" height="75" border="0"/></a></div>
         <div id="tagline">Communities That Mean <span style="color:#F00">Open API Architecture</span></div>
-        <div id="topLinks"><a href="https://getsatisfaction.com/corp/help/api-resources">API docs</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="/other/about.html">About</a></div>
+        <div id="topLinks"><a href="https://getsatisfaction.com/corp/help/api-resources" target=_blank>API docs</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="/other/about.html">About</a></div>
       </div>
     </div>
   
-    <div id="bodyContainer">
+    <div id="content">
       <%= yield %>
     </div>
     

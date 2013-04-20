@@ -1,38 +1,29 @@
-<div id=wrapper>
-  <div class="navbar">
-    <div class="navbar-inner">
-        <a class="brand" href="#">User Manager</a>
-        <a href=# class="btn" onclick=logout()>Sign out</a>
-    </div>
+<div class="navbar">
+  <div class="navbar-inner">
+      <a class="brand" href="#">User Manager</a>
+      <a href=/other/logout class="btn btn-danger" style="float:right;">Sign out</a>
   </div>
-  
-  <div id=content>
+</div>
 
-    <div class="container-fluid">
-      <form class="form-horizontal" id="memberform">
-        <fieldset>
-          <div class="control-group">
-            <label class="control-label" for="input01">Community</label>
-            <div class="controls">
-              <input type="text" name=company_slug class="input-large" placeholder="e.g. photoshop_family">
-            </div>
-            <br />
-            <label class="control-label" for="input01">Member's email address</label>
-            <div class="controls">
-              <input type="text" name=member_email class="input-large" placeholder="e.g. alice@gmail.com" size=50>
-              <a href=# class="btn" onclick=showtopics()>Look up</a>
-            </div>
+<div class="container-fluid">
+  <div class="span10">
+
+    <form class="form-horizontal" id="memberform">
+      <fieldset>
+        <div class="control-group">
+          <label class="control-label" for="input01">Member's email address</label>
+          <div class="controls">
+            <input type="text" name=member_email class="input-large" placeholder="e.g. alice@gmail.com" size=50>
+            <a href=# class="btn" onclick=showtopics()>Look up</a>
           </div>
-        </fieldset>
-      </form>
-    </div>
-    
-    <div class="container-fluid">
-      <div class="span8" id=topics>
-      </div>
-    </div>
-  </div>
+        </div>
+      </fieldset>
+    </form>
 
+    <div id=topics>
+    </div>
+
+  </div>
 </div>
 
 <script type="text/javascript">

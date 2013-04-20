@@ -3,8 +3,6 @@ require 'uri'
 
 class OtherController < ApplicationController
 
-  SATISFACTION_API_URL =  "https://api.getsatisfaction.com"
-
   # Fastpass pair for pepperagusa
   FASTPASS_KEY    = "62628zw63njo"
   FASTPASS_SECRET = "m6zc7qfx2s749zy57pre6w23589b1ke4"
@@ -14,27 +12,26 @@ class OtherController < ApplicationController
   
   def login_action
     result = api_call("/me.json", params[:loginform][:username], params[:loginform][:password])
+
     puts "--------------------My User ID: #{result['id']} #{params[:loginform][:username]}, #{params[:loginform][:password]}----------------------"
     if result['id'] then
       session[:is_valid] = true
       session[:username] = params[:loginform][:username]
       session[:password] = params[:loginform][:password]
+      session[:company_id] = api_call("/companies/#{params[:loginform][:company_name]}.json", session[:username], session[:password])['id']
       puts "===============#{params[:loginform][:return_url]}=============="
       redirect_to params[:loginform][:return_url]
     else
       session[:is_valid] = false
-#      render ...
+      redirect_to "/other/login"
     end
   end
   
   def logout
     reset_session
-    
     session[:is_valid] = false
     
-    respond_to do
-      |format| format.html { render :nothing => true }
-    end
+    redirect_to "/"
   end
 
 

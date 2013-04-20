@@ -1,5 +1,16 @@
-<%= form_tag({:action => 'login_action'}, :class => "form-inline pull-left") %>
-  <%= text_field("loginform", "username", :class => "input-large", :placeholder => "username") %>
+<div class="navbar">
+  <div class="navbar-inner">
+    <a class="brand" href="#">Please sign in here</a>
+  </div>
+</div>
+
+<div class="alert alert-error">
+  <strong>Ahem... </strong>What do you think you're doing?
+</div>
+
+<%= form_tag({:action => 'login_action'}, :class => "form-inline pull-left", :style => "style=\"margin: 6px;\"") %>
+  <%= text_field("loginform", "company_name", :class => "input-large", :placeholder => "community name", :title => "e.g. if getsatisfaction.com/pampers, enter pampers", :"data-toggle" => "tooltip") %>
+  <%= text_field("loginform", "username", :class => "input-large", :placeholder => "email address") %>
   <%= password_field("loginform", "password", :class => "input-large", :placeholder => "password") %>
   <%= hidden_field("loginform", "return_url", :value => params[:return_url]) %>
   <%= submit_tag "Sign in", :class => "btn" %>

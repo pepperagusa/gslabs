@@ -12,7 +12,6 @@ class UsersearchController < ApplicationController
   end
 
   def topics
-    session[:company_id] = api_call("/companies/#{params['company_slug']}.json", session[:username], session[:password])['id']
     session[:member_email] = params['member_email']
 
     @this_member = api_call("/people.json?email=#{session[:member_email]}", session[:username], session[:password])

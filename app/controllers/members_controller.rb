@@ -8,6 +8,9 @@ class MembersController < ApplicationController
   SATISFACTION_API_URL = 'https://api.getsatisfaction.com'
 
   def index
+    if !session[:is_valid] then
+      redirect_to "/other/login?return_url=/members"
+    end
   end
 
   def people

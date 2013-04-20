@@ -1,16 +1,6 @@
 <title>Fastpass Site Simulation</title>
 
 <style type="text/css">
-#live_area
-{
-    text-align: center;
-}
-#content
-{
-    display: inline-block;
-    text-align: left;
-    padding: 1em;
-}
 #message
 {
     font-size: 0.9em;
@@ -25,53 +15,17 @@
     -webkit-box-shadow: 2px 2px 2px #888;
     display: none;
 }
-.note
-{
-    color: #666;
-    font-size: 0.8em;
-}
-form#fastpass_credentials p
-{
-    margin: 0.5em 0;
-}
 form#fastpass_credentials label
 {
     display: inline-block;
-    width: 10em;
+    width: 12em;
     vertical-align: top;
-    text-align: right;
-    font-variant: small-caps;
-    letter-spacing: 0.02em;
     padding: 0.5em 1em 0.5em 0;
     font-size: 0.9em;
 }
 form#fastpass_credentials p.submit
 {
     padding-left: 10em;
-}
-form#fastpass_credentials .note
-{
-    display: block;
-    margin-left: 13em;
-}
-form#fastpass_credentials input[type=text],
-form#fastpass_credentials textarea
-{
-    font-size: 1em;
-    padding: 0.5em;
-    border: solid 1px #ddd;
-    background-color: #fff;
-    width: 20em;
-}
-form#fastpass_credentials input[type=text]:focus,
-form#fastpass_credentials textarea:focus
-{
-    border-color: #000;
-    background-color: #ffffcc;
-}
-form#fastpass_credentials input[type=checkbox]
-{
-    vertical-align: middle;
 }
 #dialog
 {
@@ -86,7 +40,6 @@ form#fastpass_credentials input[type=checkbox]
 #dialog .content
 {
     min-width: 400px;
-    min-height: 300px;
     background-color: #fff;
     display: inline-block;
     text-align: left;
@@ -101,7 +54,6 @@ form#fastpass_credentials input[type=checkbox]
 }
 </style>
 
-<script type="text/javascript" src="http://twitter.github.io/bootstrap/assets/js/bootstrap-tooltip.js"></script>
 <!-- OAuth      --><script type="text/javascript" src="http://oauth.googlecode.com/svn/code/javascript/oauth.js"></script>
 <!-- OAuth SHA1 --><script type="text/javascript" src="http://oauth.googlecode.com/svn/code/javascript/sha1.js"></script>
 <script type="text/javascript" src="http://getsatisfaction.com/javascripts/fastpass.js" id="fastpass_common"></script>
@@ -111,20 +63,11 @@ form#fastpass_credentials input[type=checkbox]
  * See <http://oauth.googlecode.com/svn/code/javascript/>.
  */
 $(function(){
-
-    $('#content').tooltip({
-      selector: "input[data-toggle=tooltip]"
-    })
     
-    
-    //////////
-    // Main //
-    //////////
-
     var exc;
     var $form = $('#fastpass_credentials');
 
-    $form.submit(function(evt) {
+    $('#form_submit').click(function(evt) {
         try {
             handleFormSubmit();
         } catch(exc) {
@@ -133,10 +76,6 @@ $(function(){
             return false;
         }
     });
-
-    ///////////////
-    // Functions //
-    ///////////////
 
     function handleFormSubmit() {
 
@@ -159,13 +98,17 @@ $(function(){
               '<div id="dialog">' +
                 '<div class="content">' +
                   '<div class="message"></div>' +
-                  '<p><input type="button" class="btn btn-primary close-modal" value="Close"/></p>' +
+                  '<p><input type="button" class="btn close-modal" value="Close"/> ' +
+                  '<a href=# class="btn btn-primary go-to-community">Go to community</a>' +
                 '</div>' +
               '</div>'
             ).appendTo('body')
              .click(function(evt){
                   if($(evt.target).hasClass('close-modal')) {
                       $(this).hide().find('.message').empty().end();
+                  }
+                  if($(evt.target).hasClass('go-to-community')) {
+                      location.href = 'https://google.com';
                   }
              });
         }
@@ -196,8 +139,7 @@ $(function(){
         );
 
         $(':input', $form).each(function(){
-            if( (!$(this).is(':checkbox, :radio') || $(this).attr('checked'))
-             && !$(this).hasClass('exclude')) {
+            if ( (!$(this).is(':checkbox, :radio') || $(this).attr('checked')) && !$(this).hasClass('exclude')) {
                 message.parameters.push([$(this).attr('name'), $(this).val()]);
             }
         });
@@ -207,57 +149,56 @@ $(function(){
         var signatureParam = OAuth.percentEncode(OAuth.getParameter(message.parameters, "oauth_signature"));
 
         return message.action + '?' + urlParams + '&oauth_signature=' + signatureParam;
+    alert(message.action);
     }
 
 });
 </script>
-  
-<div id="live_area">
 
-  <div id="header">
-    <h4 class=muted>Fastpass Login Simulator</h4>
+<div class="navbar">
+  <div class="navbar-inner">
+    <a class="brand" href="#">Fastpass Simulator</a>
   </div>
-      
-  <div id="content">
-    <p>Make sure you're using this tool in Chrome Incognito mode, or Firefox Private Browsing, or similar.</p>
-    <form id="fastpass_credentials" method="get">
-      <p>
-        <label for="is_secure">Use HTTPS?</label>
-        <input type="checkbox" id="is_secure" name="is_secure" value="1" class="exclude" />
-      </p>
-      <p>
-        <label for="host">Host</label>
-        <input type="text" id="host" name="host" value="" class="exclude" title="community.yourdomain.com   (if not CNAMEd: getsatisfaction.com)" data-toggle="tooltip" />
-      </p>
-      <p>
-        <label for="oauth_consumer_key">Fastpass Key</label>
-        <input type="text" id="oauth_consumer_key" name="oauth_consumer_key" value=""/>
-      </p>
-      <p>
-        <label for="consumer_secret">Fastpass Secret</label>
-        <input type="text" id="consumer_secret" name="consumer_secret" value="" size="40" class="exclude"/>
-      </p>
-      <p>
-        <label for="email">External system Email</label>
-        <input type="text" id="email" name="email" value=""/>
-      </p>
-      <p>
-        <label for="name">GetSat Display Name</label>
-        <input type="text" id="name" name="name" value=""/>
-      </p>
-      <p>
-        <label for="uid">External system UID</label>
-        <input type="text" id="uid" name="uid" value=""/>
-      </p>
-      <p>
-        <label for="additional_parameters">Other&nbsp;Params</label>
-        <input type="text" id="additional_parameters" name="additional_parameters" class="exclude" title="e.g. twitter_id=jargon&foo=bar" data-toggle="tooltip" ></input>
-      </p>
-      <p class="submit">
-        <input type="submit" name="" value="Simulate Fastpass Login" class="btn btn-large btn-primary"/>
-      </p>
-    </form>
-  
-  </div>
-
 </div>
+
+<div class="alert alert-warning">
+    Make sure you're using this tool in Chrome Incognito mode, or Firefox Private Browsing, or similar.  
+</div>
+
+<form id="fastpass_credentials" method="get">
+  <p>
+    <label for="is_secure">Use HTTPS?</label>
+    <input type="checkbox" id="is_secure" name="is_secure" value="1" class="exclude" />
+  </p>
+  <p>
+    <label for="host">Host</label>
+    <input type="text" id="host" name="host" value="" class="input-xxlarge exclude" title="community.yourdomain.com   (if not CNAMEd: getsatisfaction.com)" data-toggle="tooltip" />
+  </p>
+  <p>
+    <label for="oauth_consumer_key">Fastpass Key</label>
+    <input type="text" id="oauth_consumer_key" class="input-xxlarge" name="oauth_consumer_key" value=""/>
+  </p>
+  <p>
+    <label for="consumer_secret">Fastpass Secret</label>
+    <input type="text" id="consumer_secret" class="input-xxlarge exclude" name="consumer_secret" value="" size="40" />
+  </p>
+  <p>
+    <label for="email">External system Email</label>
+    <input type="text" id="email" class="input-xlarge" name="email" value=""/>
+  </p>
+  <p>
+    <label for="name">GetSat Display Name</label>
+    <input type="text" id="name" class="input-xlarge" name="name" value=""/>
+  </p>
+  <p>
+    <label for="uid">External system UID</label>
+    <input type="text" id="uid" class="input-xlarge" name="uid" value=""/>
+  </p>
+  <p>
+    <label for="additional_parameters">Other&nbsp;Params</label>
+    <input type="text" id="additional_parameters" name="additional_parameters" class="input-xxlarge exclude" title="e.g. twitter_id=jargon&foo=bar" data-toggle="tooltip" ></input>
+  </p>
+  <p class="submit">
+    <a href=# id=form_submit class="btn btn-large btn-primary">Simulate Fastpass Login</a>
+  </p>
+</form>
