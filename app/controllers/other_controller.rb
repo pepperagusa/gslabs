@@ -18,7 +18,7 @@ class OtherController < ApplicationController
       session[:is_valid] = true
       session[:username] = params[:loginform][:username]
       session[:password] = params[:loginform][:password]
-      session[:company_id] = api_call("/companies/#{params[:loginform][:company_name]}.json", session[:username], session[:password])['id']
+      session[:companyId] = api_call("/companies/#{params[:loginform][:company_name]}.json", session[:username], session[:password])['id']
       puts "===============#{params[:loginform][:return_url]}=============="
       redirect_to params[:loginform][:return_url]
     else

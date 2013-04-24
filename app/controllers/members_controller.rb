@@ -15,15 +15,16 @@ class MembersController < ApplicationController
 
   def people
     @current_page = 1
-    if params['companyslug'] then session[:companyId] = api_call("/companies/#{params['companyslug']}")["id"] end
+
     if params['fastpasskey'] then session[:fastpasskey] = params['fastpasskey'] end
     if params['fastpasssecret'] then session[:fastpasssecret] = params['fastpasssecret'] end
     if params['page'] then @current_page = params['page'].to_i end
     
     @something_wrong = false
-    
+
     if session[:companyId] then
       @filter = params['filter']
+      puts '------------------- FILTER --------------'
       case @filter
         when 'visited' then @filter_label = "Everyone"
         when 'employees' then @filter_label = "Employees"
@@ -39,6 +40,7 @@ class MembersController < ApplicationController
     else
       @something_wrong = true
     end
+    render :layout => false
   end
 
   def topics
@@ -54,13 +56,15 @@ class MembersController < ApplicationController
     @topics = Array.new
 
     all_topics.each { |t|
-      puts "===============topic=#{t['company_id']}======session=#{session[:companyId]}========"
       if (t['company_id'].to_s == session[:companyId].to_s) then
         @topics.push(t)
       end
     }
 
     @this_user = api_call("/people/#{params['userId']}.json")
+    
+    render :layout => false
+
   end
 
   private
