@@ -23,6 +23,7 @@ class OtherController < ApplicationController
       redirect_to params[:loginform][:return_url]
     else
       session[:is_valid] = false
+      flash[:error] = "Login failed"
       redirect_to "/other/login"
     end
   end
