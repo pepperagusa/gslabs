@@ -3,10 +3,6 @@ require 'uri'
 
 class OtherController < ApplicationController
 
-  # Fastpass pair for pepperagusa
-  FASTPASS_KEY    = "62628zw63njo"
-  FASTPASS_SECRET = "m6zc7qfx2s749zy57pre6w23589b1ke4"
-  
   def login
   end
   
