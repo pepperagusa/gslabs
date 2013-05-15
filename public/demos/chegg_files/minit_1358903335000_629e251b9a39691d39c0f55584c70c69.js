@@ -1,1 +1,0 @@
-rondavu._.initFromCDN({"timestamp":1365342901,"modules":[],"rdv_cookie":null});
