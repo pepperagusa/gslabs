@@ -1,4 +1,4 @@
-  <div class="row-fluid">
+<div class="row-fluid">
 
 <% if @something_wrong %>
   Whoops! Something went wrong
@@ -30,7 +30,12 @@
 
     </div>
       
-    <div class="span7" id=topic_settings style="display:none; position: relative; height: 90px;">
+    <div class="span7" id=fastpass_settings style="position: relative; height: 90px;">
+      <form class="form-inline pull-left" id="setFastpass">
+        <input type="text" name="fastpasskey" class="input-large" placeholder="fastpass key" value=<%= session[:fastpasskey] %>>
+        <input type="text" name="fastpasssecret" class="input-large" placeholder="fastpass secret" value=<%= session[:fastpasssecret] %>>
+        <a id=submit_fastpass_button class="btn" style="margin-top:0px;">Go!</a>
+      </form>
     </div>
       
   </div>
@@ -97,9 +102,18 @@
 </div>
 
 <script type="text/javascript">
+    jQuery("#submit_fastpass_button").click(function() {
+        fastpassPair = jQuery("#setFastpass").serialize();
+        jQuery('#people').empty().html('<center><img src="/assets/loader.gif" /></center>');
+        jQuery.post('/members/people?filter=<%= @filter %>&page=<%= @current_page %>', fastpassPair, function(data) {
+            jQuery('#people').html(data);
+        });
+    });
+</script>
+
+<script type="text/javascript">
     function showTopics(userId)
     {
-        jQuery('#topic_settings').show();
         jQuery('#topics').empty().html('<center><img src="/assets/loader.gif" /></center>');
         jQuery.get("/members/topics?userId=" + userId, function(data) {
             jQuery('#topics').html(data);

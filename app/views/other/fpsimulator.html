@@ -1,19 +1,11 @@
 <title>Fastpass Site Simulation</title>
 
 <style type="text/css">
-#message
+.message
 {
     font-size: 0.9em;
-    width: 60%;
-    text-align: left;
-    margin: 1em auto;
-    padding: 0.75em;
-    background-color: #ffffcc;
-    border: solid 1px #888;
-    box-shadow: 2px 2px 2px #888;
-    -moz-box-shadow: 2px 2px 2px #888;
-    -webkit-box-shadow: 2px 2px 2px #888;
-    display: none;
+    width: 500px;
+    overflow:scroll;
 }
 form#fastpass_credentials label
 {
@@ -67,6 +59,11 @@ $(function(){
     var exc;
     var $form = $('#fastpass_credentials');
 
+    var fastpassUrlProtocol;
+    var fastpassUrlHost;
+    var fastpassUrlPath =  '/fastpass';
+
+
     $('#form_submit').click(function(evt) {
         try {
             handleFormSubmit();
@@ -82,45 +79,30 @@ $(function(){
         var callbackUrl = generateOauthSignedUrl();
 
         $('script#fastpass').remove();
-        $('<script/>', {src: callbackUrl, type: 'text/javascript', id: 'fastpass'}).appendTo('head');
-
-        openDialog(
-           "<p>Fastpass URL<br/>" +
-           "<pre>    " + callbackUrl.replace(/&/g, '\n      &') +
-           "</pre></p>"
-        );
-    }
-
-    function openDialog(html) {
-
-        if(!$('#dialog').size()) {
-            $(
-              '<div id="dialog">' +
-                '<div class="content">' +
-                  '<div class="message"></div>' +
-                  '<p><input type="button" class="btn close-modal" value="Close"/> ' +
-                  '<a href=# class="btn btn-primary go-to-community">Go to community</a>' +
-                '</div>' +
-              '</div>'
-            ).appendTo('body')
-             .click(function(evt){
-                  if($(evt.target).hasClass('close-modal')) {
-                      $(this).hide().find('.message').empty().end();
-                  }
-                  if($(evt.target).hasClass('go-to-community')) {
-                      location.href = 'https://google.com';
-                  }
-             });
-        }
-
-        $('#dialog .message').html(html).slideDown();
+//        $('<script/>', {src: callbackUrl, type: 'text/javascript', id: 'fastpass'}).appendTo('head');
+$.ajaxSetup({ cache: true });
+$.getScript(callbackUrl, function(data, textStatus, jqxhr) {
+   console.log(data); //data returned
+   console.log(textStatus); //success
+   console.log(jqxhr.status); //200
+   console.log('Load was performed.');
+$.ajaxSetup({ cache: false });
+});
+        $('#dialog').show();
+        $('.message').html('<p><b>Fastpass URL:</b><br/>' + callbackUrl + '</p>');
+        $('.close-modal').click(function() {
+            $('.message').empty();
+            $('#dialog').hide();
+        });
+        $('.go-to-community').click(function() {
+            GSFN.goto_gsfn();
+        });
     }
 
     function generateOauthSignedUrl() {
 
-        var fastpassUrlProtocol = $('#is_secure').attr('checked') ? 'https://' : 'http://';
-        var fastpassUrlHost =  $('#host').val() || 'getsatisfaction.com';
-        var fastpassUrlPath =  '/fastpass';
+        fastpassUrlProtocol = $('#is_secure').attr('checked') ? 'https://' : 'http://';
+        fastpassUrlHost =  $('#host').val() || 'getsatisfaction.com';
 
         var accessor = {
             consumerSecret: $('#consumer_secret').val()
@@ -155,9 +137,9 @@ $(function(){
 });
 </script>
 
-<div class="navbar">
+<div class="navbar navbar-static-top" style="padding-bottom:20px;">
   <div class="navbar-inner">
-    <a class="brand" href="#">Fastpass Simulator</a>
+    <a class="brand" href="#">Fastpass simulator</a>
   </div>
 </div>
 
@@ -202,3 +184,11 @@ $(function(){
     <a href=# id=form_submit class="btn btn-large btn-primary">Simulate Fastpass Login</a>
   </p>
 </form>
+
+<div id="dialog" style="display: none;">
+  <div class="content">
+    <div class="message"></div>
+    <p><input type="button" class="btn close-modal" value="Close"/>
+    <a href=# class="btn btn-primary go-to-community">Go to community</a>
+  </div>
+</div>

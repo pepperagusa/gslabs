@@ -1,42 +1,19 @@
-<div class="navbar">
+<div class="navbar navbar-static-top" style="padding-bottom:20px;">
   <div class="navbar-inner">
     <a class="brand" href="#">Community Members Explorer</a>
-    <a href=/other/logout class="btn btn-danger" style="float:right;">Sign out</a>
+    
+    <a href="/other/logout" class="btn btn-danger" style="float:right;">Sign out</a><div style="float: right; margin: 9px;">Welcome <%= session[:name] %> </div>
   </div>
 </div>
 
-<form class="form-inline pull-left" style="margin: 6px;" id="setFastpass">
-  <input type="text" name="fastpasskey" class="input-large" placeholder="fastpass key">
-  <input type="text" name="fastpasssecret" class="input-xxlarge" placeholder="fastpass secret">
-  <button type="submit" class="btn" style="margin-top:0px;">Go!</button>
-</form>
-
 <div class="container-fluid" id=people>
 </div>
-    
-<script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery.validate/1.7/jquery.validate.min.js"></script>
 
 <script type="text/javascript">
     jQuery(document).ready(function(){
-    
-            jQuery("#setFastpass").validate({
-                    debug: false,
-                    rules: {
-                            query: {
-                                    required: true,
-                            }
-                    },
-                    messages: {
-                            query: "",
-                    },
-                    submitHandler: function(form) {
-                            // do other stuff for a valid form
-                            jQuery('#people').empty().html('<img src="/assets/loader.gif" />');
-                            jQuery.post('/members/people', jQuery("#search").serialize(), function(data) {
-                                    jQuery('#people').html(data);
-                            });
-                    }
-            });
-            
+      jQuery('#people').empty().html('<center><img src="/assets/loader.gif" /></center>');
+      jQuery.get('/members/people', function(data) {
+              jQuery('#people').html(data);
+      });
     });
 </script>

@@ -12,11 +12,11 @@ class ApplicationController < ActionController::Base
       request.basic_auth(username, password)
     end
     response = http.request(request)
-    JSON.parse(response.body)
+    (response.body != "The resource you requested does not exist") ? JSON.parse(response.body) : {"nodata" => "true"}
   end
   
-  def api_call_2_legged(endpoint)
-    consumer = OAuth::Consumer.new(FASTPASS_KEY, FASTPASS_SECRET, :site => SATISFACTION_API_URL, :http_method => :get)
+  def api_call_2_legged(endpoint, key, secret)
+    consumer = OAuth::Consumer.new(key, secret, :site => SATISFACTION_API_URL, :http_method => :get)
     access_token = OAuth::AccessToken.new(consumer)
     request_headers = {'Content-Type' => 'application/json'}
     response = access_token.get(endpoint, request_headers)

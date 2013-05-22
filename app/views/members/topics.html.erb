@@ -1,10 +1,24 @@
-<img src= <%= @this_user['avatar_url_medium'] %>>
-<a href=<%= @this_user['at_sfn'] %> target=_blank><h3><%= @this_user['name']%></h3></a>
-
-<% @identity.each_pair do |k, v|%>
-<h6><%= k %>: <%= v %></h6>
+<% if flash[:info] %>
+  <div class="alert alert-error">
+    <%= flash[:info] %></strong>
+  </div>
 <% end %>
-<br />
+
+<a href=<%= @this_user['at_sfn'] %> target=_blank><img src= <%= @this_user['avatar_url_medium'] %>> <strong><%= @this_user['name']%></strong></a>
+<br><br>
+
+<strong>Fastpass identity</strong>
+<% if @identity.size > 0 then %>
+    &nbsp;
+    <button id=delete_identity class="btn btn-danger btn-mini">Delete</button>
+    <ul>
+        <% @identity.each_pair do |k, v|%>
+        <li><%= k %>: <%= v %></li>
+        <% end %>
+    </ul>
+<% else %>
+    <br>Not available<br><br>
+<% end %>
 
 <% if @topics.size > 0 then %>
     <table class="table table-striped table-bordered table-condensed">
@@ -31,3 +45,12 @@
     <h4>No topics</h4>
 <% end %>
 </table>
+
+<script type="text/javascript">
+    jQuery("#delete_identity").click(function() {
+        jQuery('#topics').empty().html('<center><img src="/assets/loader.gif" /></center>');
+        jQuery.get("/members/topics?userId=" + <%= @this_user['id'] %> + "&deleteidentity=1", function(data) {
+            jQuery('#topics').html(data);
+        });
+    });
+</script>

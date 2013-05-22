@@ -24,7 +24,7 @@ class MembersController < ApplicationController
 
     if session[:companyId] then
       @filter = params['filter']
-      puts '------------------- FILTER --------------'
+      puts "------------------- #{session[:fastpasskey]} --------------"
       case @filter
         when 'visited' then @filter_label = "Everyone"
         when 'employees' then @filter_label = "Employees"
@@ -44,49 +44,41 @@ class MembersController < ApplicationController
   end
 
   def topics
-    result = api_call_2_legged("/people/#{params['userId']}/identity.json")
-    if result.has_key?("nodata") then
-      @identity = { "Fastpass Identity" => 'N/A'}
-    else
-      @identity = result["custom_attributes"]
-    end
-    
-    result = api_call("/people/#{params['userId']}/followed/topics.json?limit=30")
-    all_topics = result["data"]
-    @topics = Array.new
-
-    all_topics.each { |t|
-      if (t['company_id'].to_s == session[:companyId].to_s) then
-        @topics.push(t)
+    if params['userId']
+      
+      flash[:info] = nil
+      
+      if params['deleteidentity'] == '1'
+        consumer = OAuth::Consumer.new(session[:fastpasskey], session[:fastpasssecret], :site => SATISFACTION_API_URL, :http_method => :delete)
+        access_token = OAuth::AccessToken.new(consumer)
+        request_headers = {'Content-Type' => 'application/json'}
+        response = access_token.delete("/people/#{params['userId']}/identity.json", request_headers)
+        (response.code == "200") ? flash[:info] = "Identity deleted successfully" : flash[:info] = "Could not delete the Fastpass identity!"
       end
-    }
+      
+      result = api_call_2_legged("/people/#{params['userId']}/identity.json", session[:fastpasskey], session[:fastpasssecret])
+      if result.has_key?("nodata") then
+        @identity = { }
+      else
+        @identity = result["custom_attributes"]
+      end
+      
+      result = api_call("/people/#{params['userId']}/followed/topics.json?limit=30")
+      all_topics = result["data"]
+      @topics = Array.new
+  
+      all_topics.each { |t|
+        if (t['company_id'].to_s == session[:companyId].to_s) then
+          @topics.push(t)
+        end
+      }
+  
+      @this_user = api_call("/people/#{params['userId']}.json")
+        
+    end
 
-    @this_user = api_call("/people/#{params['userId']}.json")
-    
     render :layout => false
 
-  end
-
-  private
-
-  def api_call(endpoint)
-    uri = URI.parse(URI.encode(SATISFACTION_API_URL + endpoint))
-    http = Net::HTTP.new(uri.host, uri.port)
-    http.use_ssl = true
-    request = Net::HTTP::Get.new(uri.request_uri, {'Content-Type' => 'application/json', 'Accept'=> 'application/json'})
-    request.basic_auth(session[:username], session[:password])
-    response = http.request(request)
-puts "#{endpoint} -> #{response.body}"
-    (response.body != "The resource you requested does not exist") ? JSON.parse(response.body) : {"nodata" => "true"}
-  end
-  
-  def api_call_2_legged(endpoint)
-    consumer = OAuth::Consumer.new(session[:fastpasskey], session[:fastpasssecret], :site => SATISFACTION_API_URL, :http_method => :get)
-    access_token = OAuth::AccessToken.new(consumer)
-    request_headers = {'Content-Type' => 'application/json'}
-    response = access_token.get(endpoint, request_headers)
-    puts "=================\n#{response.code}\n#{response.body}\n=============="
-    (response.code == "200") ? JSON.parse(response.body) : { "nodata" => "true"}
   end
 
 end
