@@ -1,0 +1,110 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js" type="text/javascript"></script>
+<script type="text/javascript">
+  $(function() {
+
+    EXPORTER = {
+      pagesize: 30,
+      topicsUrl: '',
+      numberOfTopics: null,
+      numberOfPages: null,
+      topics: [],
+      topicsFetched: 0,
+
+      init: function () {
+        $('#download-form').hide();
+        $('#submit-community').click(_.bind(this.handleCommunityLookup, this));
+        $('#submit-export').click(_.bind(this.handleDownload, this));
+      },
+
+      fetchTopics: function (startingAtPage, success, error) {
+        $.ajax(this.topicsUrl + "?limit=" + this.pagesize + "&page=" + startingAtPage, {
+          dataType: "jsonp",
+          success: _.bind(function (data, status, jqXHR) {
+            _.each(data.data, function (topic) {
+              this.topicsFetched += 1;
+              this.topics.push(this.formatRow([topic.id, topic.created_at, topic.style, topic.author.name, topic.last_active_at, topic.is_archived, topic.subject, topic.content, topic.me_too_count, topic.at_sfn]));
+            }, this);
+            $('#export-progress').css('width', (this.topicsFetched / this.numberOfTopics * 100) + '%');
+            if (startingAtPage < this.numberOfPages) {
+              this.fetchTopics(startingAtPage + 1, success, error);
+            } else {
+              success();
+            }
+          }, this),
+          error: function (jqXHR, textStatus, errorThrown) {
+            error(jqXHR, textStatus, errorThrown);
+          }
+        });
+      },
+      
+      handleCommunityLookup: function (e) {
+        e.preventDefault();
+                                 
+        this.topicsUrl = "https://api.getsatisfaction.com/companies/" + $('#domain').val() + "/topics.json";
+        $.ajax(this.topicsUrl, {
+          dataType: "jsonp",
+          success: _.bind(function (data, status, jqXHR) {
+            this.numberOfTopics = data.total;
+            this.numberOfPages = Math.ceil(this.numberOfTopics / this.pagesize);
+            $('#export').show();
+            $('#submit-export').text("Export " + this.numberOfTopics + " topics");
+          }, this),
+          error: function (jqXHR, textStatus, errorThrown) {
+            alert(textStatus);
+          }
+        });
+      },
+
+      handleDownload: function (e) {
+        e.preventDefault();
+        this.topics = [];
+        this.fetchTopics(1, _.bind(function () {
+          this.topics.unshift(this.formatRow(["TopicId", "CreatedAt", "Type", "Author", "LastActiveAt", "isArchived", "Subject", "Content", "MeToos", "URL"]));
+          var blob = new Blob([this.topics.join("\n")], {type: "text/csv"});
+          var link = document.createElement('a');
+          $('#submit-download').attr('href', window.URL.createObjectURL(blob));
+          $('#submit-download').show();
+        }, this), function (jqXHR, textStatus, errorThrown) {
+          alert(textStatus);
+        });
+      },
+
+      formatRow: function (row) {
+        return _.map(row, function (field) {
+          // RFC4180 csv formatting:
+          if (field === null) { field = "NULL"; }
+          return '"' + field.toString().replace(/"/g, '""') + '"'; //" this comment is a closing double-quote for dumb text editors
+        }).join(",");
+      }
+    };
+
+    EXPORTER.init();
+  });
+</script>
+
+<div class="navbar navbar-static-top" style="padding-bottom:20px;">
+  <div class="navbar-inner">
+    <span class="brand">Data liberation</span>
+  </div>
+</div>
+
+<div class="alert alert-warning">
+    Make sure you're using this tool in Chrome. It will fail in other browsers.
+</div>
+
+<div style="clear:both;">
+  <form id="community-form" class="form-inline pull-left">
+    <input placeholder="community name" id="domain" type="text" class="input-large">
+    <button id="submit-community" name="submit-company" class="btn">Lookup!</button>
+  </form>
+</div>
+
+<div style="clear:both; display:none;" id="export">
+  <a href="#" id="submit-export" class="btn btn-primary">Export</a>
+  <div class="progress" style="margin-top:10px;">
+    <div class="bar" id="export-progress" style="width: 0%;"></div>
+  </div>
+</div>
+
+<br><br><br>
+<a href="#" id="submit-download" style="display:none;" class="btn btn-large btn-danger">Download CSV file</a>
