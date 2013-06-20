@@ -1,0 +1,188 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js" type="text/javascript"></script>
+<script type="text/javascript">
+  $(function() {
+
+    EXPORTER = {
+      pagesize: 30,
+
+      init: function () {
+        $('#download-form').hide();
+        $('#submit-community').click(_.bind(this.handleCommunityLookup, this));
+        $('#submit-export').click(_.bind(this.handleDownload, this));
+
+        this.reset();
+      },
+
+      reset: function (justResults) {
+        $('#topics-csv').hide();
+        $('#replies-csv').hide();
+        this.topics = [];
+        this.replies = [];
+        $('#fetched-topic-count').html("");
+
+        if (!justResults) {
+          $('#download-form').hide();
+
+          this.downloadReplies = false;
+          this.topicsUrl = '';
+          this.numberOfTopics = null;
+          this.numberOfPages = null;
+          this.topicsFetched = 0;
+        }
+      },
+
+      fetchTopics: function (startingAtPage, success, error) {
+        $.ajax(this.topicsUrl + "?limit=" + this.pagesize + "&page=" + startingAtPage, {
+          dataType: "jsonp",
+          success: _.bind(function (data, status, jqXHR) {
+            var processTopics = _.bind(function(i, success) {
+  
+              if (i >= data.data.length) {
+                return success();
+              }
+
+              var topic = data.data[i];
+        
+              this.topics.push(this.formatRow([topic.id, topic.created_at, topic.style, topic.author.name, topic.last_active_at, topic.is_archived, topic.subject, topic.content, topic.me_too_count, topic.at_sfn]));
+              this.topicsFetched += 1;
+
+              // $('#fetched-topic-count').html("Fetched " + this.topics.length + " topics");
+              $('#export-progress').css('width', (this.topicsFetched / this.numberOfTopics * 100) + '%');
+              
+              if (this.downloadReplies) {
+                this.fetchReplies(topic.id, 1, function () { processTopics(i + 1, success); }); 
+              } else {
+                processTopics(i + 1, success);
+              }
+            }, this);
+
+            processTopics(0, _.bind(function () {
+              if (startingAtPage < this.numberOfPages) {
+                this.fetchTopics(startingAtPage + 1, success, error);
+              } else {
+                success();
+              }
+            }, this));
+
+          }, this),
+
+          error: function (jqXHR, textStatus, errorThrown) {
+            error(jqXHR, textStatus, errorThrown);
+          }
+        });
+      },
+
+      fetchReplies: function (topic_id, startingAtPage, success) {
+        $.ajax("https://api.getsatisfaction.com/topics/" + topic_id + "/replies.json?limit=" + this.pagesize + "&page=" + startingAtPage, {
+          dataType: "jsonp",
+          success: _.bind(function (data, status, jqXHR) {
+            if (data.data.length === 0) {
+              return success();
+            } 
+
+            _.each(data.data, function (reply) {
+              this.replies.push(this.formatRow([reply.topic_id, reply.created_at, reply.author.name, reply.content]));
+            }, this);
+            this.fetchReplies(topic_id, startingAtPage + 1, success);
+          }, this),
+          error: function (jqXHR, textStatus, errorThrown) {
+            alert(textStatus);
+          }
+        });
+      },
+
+      handleCommunityLookup: function (e) {
+        e.preventDefault();
+        this.reset();
+        this.topicsUrl = "https://api.getsatisfaction.com/companies/" + $('#domain').val() + "/topics.json";
+
+        $.ajax(this.topicsUrl, {
+          dataType: "jsonp",
+          success: _.bind(function (data, status, jqXHR) {
+            this.numberOfTopics = data.total;
+            this.numberOfPages = Math.ceil(this.numberOfTopics / this.pagesize);
+            $('#export').show();
+            $('#submit-export').text("Export " + this.numberOfTopics + " topics");
+          }, this),
+          error: function (jqXHR, textStatus, errorThrown) {
+            alert(textStatus);
+          }
+        });
+      },
+
+      handleDownload: function (e) {
+        e.preventDefault();
+
+        $('button').attr('disabled', true);
+        this.downloadReplies = $('#download-replies-checkbox').prop("checked");
+
+        this.reset(true);
+
+        this.fetchTopics(1, _.bind(function () {
+
+          this.topics.unshift(this.formatRow(["TopicId", "CreatedAt", "Type", "Author", "LastActiveAt", "isArchived", "Subject", "Content", "MeToos", "URL"]));
+
+          $('#download-topics').attr("href", window.URL.createObjectURL(new Blob([this.topics.join("\n")], {type: "text/csv"})));
+          $('#download-topics').show();
+
+          if (this.downloadReplies) {
+            this.replies.unshift(this.formatRow(["TopicId", "CreatedAt", "Author", "Content"]));
+            $('#download-replies').attr("href", window.URL.createObjectURL(new Blob([this.replies.join("\n")], {type: "text/csv"}))).show();
+            $('#download-replies').show();
+          }
+
+          $('button').attr('disabled', false);
+
+        }, this), function (jqXHR, textStatus, errorThrown) {
+          alert(textStatus);
+        });
+      },
+
+      formatRow: function (row) {
+        return _.map(row, function (field) {
+          // RFC4180 csv formatting:
+          if (field === null) { field = "NULL"; }
+          return '"' + field.toString().replace(/"/g, '""') + '"'; //" this comment is a closing double-quote for dumb text editors
+        }).join(",");
+      }
+
+    };
+
+    EXPORTER.init();
+  });
+</script>
+
+<div id="fetched-topic-count"></div>
+<div id="topics-csv"><a href="">download the topics csv</a></div>
+<div id="replies-csv"><a href="">download the replies csv</a></div>
+
+
+<div class="navbar navbar-static-top" style="padding-bottom:20px;">
+  <div class="navbar-inner">
+    <span class="brand">Data liberation</span>
+  </div>
+</div>
+
+<div class="alert alert-warning">
+    Make sure you're using this tool in Chrome. It will fail in other browsers.
+</div>
+
+<div class="clearfix">
+  <form id="community-form" class="form-inline pull-left">
+    <input placeholder="community name" id="domain" type="text" class="input-large" title = "e.g. if getsatisfaction.com/pampers, enter pampers", data-toggle = "tooltip">
+    <button id="submit-community" name="submit-company" class="btn">Lookup!</button>
+  </form>
+</div>
+
+<div style="display:none;" id="export" class="clearfix">
+  <a href="#" id="submit-export" class="btn btn-primary">Export</a>
+  <input type="checkbox" id="download-replies-checkbox"> Include replies?</input>
+  <div class="progress progress-striped" style="margin-top:10px;">
+    <div class="bar" id="export-progress" style="width: 0%;"></div>
+  </div>
+</div>
+
+<div id="download-buttons" class="clearfix">
+  <a href="#" id="download-topics" style="display:none;" class="btn btn-large btn-danger">Download Topics (CSV)</a>
+  <a href="#" id="download-replies" style="display:none;" class="btn btn-large btn-warning">Download Replies (CSV)</a>
+</div>

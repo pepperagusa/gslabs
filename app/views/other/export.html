@@ -44,6 +44,7 @@
         $.ajax(this.topicsUrl, {
           dataType: "jsonp",
           success: _.bind(function (data, status, jqXHR) {
+            this.topicsFetched = 0;
             this.numberOfTopics = data.total;
             this.numberOfPages = Math.ceil(this.numberOfTopics / this.pagesize);
             $('#export').show();
@@ -62,8 +63,9 @@
           this.topics.unshift(this.formatRow(["TopicId", "CreatedAt", "Type", "Author", "LastActiveAt", "isArchived", "Subject", "Content", "MeToos", "URL"]));
           var blob = new Blob([this.topics.join("\n")], {type: "text/csv"});
           var link = document.createElement('a');
-          $('#submit-download').attr('href', window.URL.createObjectURL(blob));
-          $('#submit-download').show();
+          $('#download-buttons').show();
+          $('#download-topics').attr('href', window.URL.createObjectURL(blob));
+          $('#download-replies').attr('href', window.URL.createObjectURL(blob));
         }, this), function (jqXHR, textStatus, errorThrown) {
           alert(textStatus);
         });
@@ -92,19 +94,22 @@
     Make sure you're using this tool in Chrome. It will fail in other browsers.
 </div>
 
-<div style="clear:both;">
+<div class="clearfix">
   <form id="community-form" class="form-inline pull-left">
-    <input placeholder="community name" id="domain" type="text" class="input-large">
+    <input placeholder="community name" id="domain" type="text" class="input-large" title = "e.g. if getsatisfaction.com/pampers, enter pampers", data-toggle = "tooltip">
     <button id="submit-community" name="submit-company" class="btn">Lookup!</button>
   </form>
 </div>
 
-<div style="clear:both; display:none;" id="export">
+<div style="display:none;" id="export" class="clearfix">
   <a href="#" id="submit-export" class="btn btn-primary">Export</a>
-  <div class="progress" style="margin-top:10px;">
+  <input type="checkbox"> Include replies?</input>
+  <div class="progress progress-striped" style="margin-top:10px;">
     <div class="bar" id="export-progress" style="width: 0%;"></div>
   </div>
 </div>
 
-<br><br><br>
-<a href="#" id="submit-download" style="display:none;" class="btn btn-large btn-danger">Download CSV file</a>
+<div style="display:none;" id="download-buttons" class="clearfix">
+  <a href="#" id="download-topics" class="btn btn-large btn-danger">Download Topics (CSV)</a>
+  <a href="#" id="download-replies" class="btn btn-large btn-warning">Download Replies (CSV)</a>
+</div>
